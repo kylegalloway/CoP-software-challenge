@@ -37,3 +37,18 @@ once there's a first release.
   the [Mantine](https://github.com/mantinedev/mantine) component library's
   visual style (no React or Mantine dependency).
 - This changelog.
+- `CONTEXT.md` — project glossary, starting with a tight definition of
+  "footprint" scoped strictly to the browser-side payload.
+- Seven ADRs in `docs/decisions/` resolving every open question from
+  `PLAN.md`/`TODO.md`, plus two raised mid-session: HTTP layer (axum),
+  moderation threshold (net +3 votes, DB-only admin override), vote
+  anti-abuse (cookie fingerprint, mutable votes, no rate limiting),
+  per-skin empty-state text (via CSS generated content), corpus mining
+  source (OPUS/OpenSubtitles, single-line excerpts only), per-entry scene
+  images (crowdsourced, app-hosted, capped, lazy-loaded), and deploy
+  target (clone-and-run only, auto-seeded on first boot).
+
+### Changed
+- `PLAN.md`, `TODO.md`, `AGENTS.md` updated to reference the new ADRs in
+  place of the open-question/TBD markers they previously carried; `TODO.md`
+  Phase 1/6 updated for per-entry image support.

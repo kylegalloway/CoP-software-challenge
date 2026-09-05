@@ -136,3 +136,56 @@ corpus-verification.md, dev-guide.md, testing-plan.md, decisions/; (4)
 src/ Rust scaffold; (5) web/ shell + all 13 skins; (6) data/seed/ +
 scripts/; (7) CHANGELOG.md; (8) .vscode/ dev environment config.
 Verified each commit's signature with `git log -1 --format="%G? %h %s"`.
+
+## 2026-09-05 — Grill-with-docs session: resolved all open ADR questions
+Asked: Run `/grill-with-docs` to work through the ADRs flagged as open in
+`PLAN.md`/`TODO.md`, one question at a time with recommended answers.
+Did: Created `CONTEXT.md` (glossary; defined "Footprint" as strictly the
+browser-side payload, not backend deps/binary size — resolves a term used
+loosely elsewhere). Wrote seven ADRs in `docs/decisions/`, each `accepted`:
+- **0001-http-layer**: axum (footprint budget doesn't constrain backend
+  deps, since it's scoped to the client per `CONTEXT.md`).
+- **0002-moderation-threshold**: net +3 votes to confirm; admin override is
+  direct DB edit only, no app-level admin auth/routes.
+- **0003-vote-anti-abuse**: voter_fingerprint = first-party random-ID
+  cookie; no rate limiting (accepted gap vs. a scripted abuser, low stakes);
+  votes are mutable (upvote/downvote/retract), which means `votes` needs a
+  unique constraint on `(entry_id, voter_fingerprint)` and an upsert, not a
+  pure append-only log — flagged for `src/db/schema.sql`/`vote.rs`.
+- **0004-empty-state-per-skin**: "no notable date" text is per-skin, but
+  mechanically via CSS generated content keyed off a `data-empty-state`
+  attribute `core.js` always renders — zero `skin.js` involvement, keeps
+  skins pure-CSS per `AGENTS.md`.
+- **0005-corpus-mining-source**: mine from the OPUS OpenSubtitles dump;
+  only the single matched line is ever persisted (no surrounding context,
+  no subtitle file redistribution) to stay within research-use terms and
+  the existing "mined data is a lead, not a citation" posture.
+- **0006-entry-images** (new scope, raised mid-session by the human, not
+  originally in `PLAN.md`): per-entry scene images, crowdsourced alongside
+  submissions, app-hosted (not hotlinked), resized/re-encoded on upload to
+  a capped size/format, delivered lazily so the guaranteed per-page-load
+  footprint is unaffected by whether an entry has an image. Folded into
+  Phase 1 (schema: nullable `image_url`) and Phase 6 (upload handling) of
+  `TODO.md` per follow-up.
+- **0007-deploy-target**: clone-and-run only, no hosted deploy (accepted
+  trade-off: weakens the live multi-reviewer crowdsourcing demo). DB and
+  any uploaded images stay gitignored, never committed — auto-seeded from
+  the existing committed `data/seed/dates.seed.json` on first run, per the
+  original Phase 0/1 plan (a pre-seeded binary `.db` in the repo was
+  considered and explicitly rejected because of binary-diff churn, same
+  reasoning extended to never committing crowdsourced images).
+
+Updated `PLAN.md` (open-questions section replaced with a "Decisions"
+list linking all seven ADRs; footprint budget marked explicitly as a soft,
+non-gating target to revisit once the app runs and once images are in
+play) and `TODO.md` (every `**(ADR)**` marker replaced with a link to its
+resolved decision; Phase 1/6 updated for `image_url` and upload handling;
+Phase 9 updated for the clone-and-run deploy note). Updated `AGENTS.md`'s
+"TBD by the human" HTTP-layer note to point at ADR-0001.
+
+State at end of session: every question originally flagged as open in
+`PLAN.md`/`TODO.md` is resolved. No code has been written (per the
+no-agent-code rule) — `src/`, `Cargo.toml`, and `web/` remain the empty
+scaffold from the first session. Next step per the human is to start
+hand-writing code, beginning with Phase 0 (`Cargo.toml`, hello-world
+`main.rs`) per `TODO.md`.
