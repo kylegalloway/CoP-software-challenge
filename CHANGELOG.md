@@ -58,6 +58,11 @@ once there's a first release.
   `docs/dev-guide.md` with a language (`text`/`sh`) and added blank lines
   around headings/lists in `CHANGELOG.md`, to satisfy the new markdownlint
   config below without changing any actual content.
+- `README.md` gained a "Use of AI in this project" section summarizing
+  what agents were and weren't allowed to do here, and pointing to
+  `docs/agent-log.md` as the auditable record; its intro paragraph was
+  trimmed of "entered sideways"-style narrative framing, keeping only the
+  factual four-axis description.
 
 ### Added
 

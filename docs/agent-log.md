@@ -189,3 +189,30 @@ no-agent-code rule) — `src/`, `Cargo.toml`, and `web/` remain the empty
 scaffold from the first session. Next step per the human is to start
 hand-writing code, beginning with Phase 0 (`Cargo.toml`, hello-world
 `main.rs`) per `TODO.md`.
+
+## 2026-09-05 — Add "Use of AI" section to README
+Asked: Add a section at the top of the README detailing the use of AI/LLMs
+in this project and what it was allowed/not allowed to do, for human
+readers (not AI/agent systems).
+Did: Added a "Use of AI in this project" section near the top of
+`README.md`, summarizing the no-agent-code rule and allowed roles
+(brainstorming, planning/scoping docs, research, scaffolding, docs, review)
+from `AGENTS.md`, and pointing to `docs/agent-log.md` as the auditable
+record of every agent interaction. No source code touched.
+
+## 2026-09-05 — Trim "entered sideways" framing from README
+Asked: Update README/ADRs/etc to keep only the factual "what" framing
+("built for an internal software challenge," the four-axis approach) and
+drop narrative/strategic phrasing like "entered sideways" or "subverting,"
+leaving that kind of framing to the agent-log instead. Clarified on
+follow-up that the four-axes/best-of-show description itself is fine to
+keep in PLAN.md/AGENTS.md — only the "sideways"/"subversion" wording needed
+to go.
+Did: Searched README.md, PLAN.md, TODO.md, AGENTS.md, and docs/*.md for
+"sideways," "subvert," "entered sideways," and "best of show" phrasing.
+Found the only instance in README.md's intro paragraph ("entered sideways:
+instead of 'the nicest site'..."); PLAN.md and AGENTS.md already phrase it
+factually ("competes on four axes," "hit several axes at once") without
+that language, so left them unchanged. Edited README.md's opening paragraph
+to drop the "entered sideways" clause while keeping the four-axis summary.
+No source code touched.
