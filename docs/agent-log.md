@@ -262,3 +262,38 @@ since it's a small addition to the same file already being committed.
 Also caught and is fixing, via this entry, that `docs/agent-log.md` itself
 had gone unupdated for this entire session despite AGENTS.md's
 every-single-interaction logging rule — this entry backfills that gap.
+
+## 2026-09-05 — Phase 1.5 review, doc cleanup, and commit
+
+Asked: start Phase 1.5 (specific-year retrofit); then, once the human had
+hand-written the schema/model/db/seed changes themselves, review those
+changes and update TODO/PLAN docs; then run `/commit`.
+Did: Discussed the two open decisions from the Phase 1.5 TODO (coupled
+`needs_specific_year`/`specific_year`, and a flat always-present
+`specific_year` field on the future `GET /api/date/:mm-dd` response) and
+got the human's calls on both before any code existed. The human then
+wrote `src/db/schema.sql`, `src/models.rs`, `src/db/mod.rs`, and the seed
+data by hand. Reviewed all of it: confirmed the CHECK constraint matches
+the coupled decision, the INSERT column list/params! line up, and ran
+`cargo build` plus a scratch-DB `cargo run` to confirm the seed inserts
+correctly (Back to the Future Part II lands with `specific_year = 2015`).
+Flagged two gaps in `data/seed/dates.schema.json` (missing from
+`required`; no `if`/`then` mirroring the SQL CHECK) as new TODO items
+rather than fixing them directly, per the "human writes code" rule. The
+human then wrote the `if`/`then`/`else` themselves; verified it with a
+real `jsonschema` install (via `uv run --with jsonschema`, since the
+system Python is externally-managed) against all three seed entries
+(pass) and two deliberately-invalid shapes (both correctly rejected).
+Updated `TODO.md` (checked off completed Phase 1.5 items, recorded both
+decisions) and `CHANGELOG.md` (Unreleased entry for the retrofit) —
+permitted under AGENTS.md as documentation, not implementation code.
+Ran `/commit`: split the change into two signed commits (schema/model/db
+code + seed data together, since seed JSON is `include_str!`'d into the
+binary and coupled to the model at parse time; then the TODO/CHANGELOG
+docs separately). Confirmed both signed (`git log --format="%G? %h %s"`
+shows `G`). Surfaced a real conflict between this session's default
+system instructions (which require a `Co-Authored-By: Claude` commit
+trailer) and this repo's `/commit` skill/history (no AI attribution,
+ever) — the human confirmed the repo convention wins, so no trailer was
+added to either commit, and a cross-session memory note was written
+(outside this repo) so future sessions here don't re-ask.
