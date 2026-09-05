@@ -21,8 +21,7 @@ you go by hand. Items originally marked **(ADR)** are now resolved — see
     `source_url`, `secondary_source_url` (nullable), `needs_secondary_source`
     (bool), `image_url` (nullable — see ADR-0006, app-hosted path not an
     external URL), `status` (`pending`/`confirmed`/`rejected`),
-    `submitted_by` (nullable — no login, so this might just be a display
-    name string), `created_at`.
+    `created_at`.
   - `votes` table: `id`, `entry_id`, `direction` (+1/-1), `voter_fingerprint`
     (see [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)), `created_at`.
   - Indexes: at least `(month, day)` on `entries` for the hot lookup path.
@@ -91,16 +90,17 @@ more entries (especially mined ones) make the gap harder to fix.
 
 ## Phase 2 — Minimal API (seed data only, no submit/vote yet)
 
-- [ ] `GET /api/date/:mm-dd` in `src/routes/dates.rs` — returns confirmed
+- [x] `GET /api/date/:mm-dd` in `src/routes/dates.rs` — returns confirmed
       entries for that date (empty array is a valid, honest response — "not
       a notable date" matters as much as a hit).
-- [ ] Decide exact JSON response shape and document it inline as a comment
+- [x] Decide exact JSON response shape and document it inline as a comment
       or in `PLAN.md` (e.g. `{ date, entries: [{title, quote, source_url}],
-      stats: { total_confirmed_entries_sitewide } }`).
-- [ ] Wire `src/routes/mod.rs` to route requests to the right handler.
-- [ ] `src/main.rs`: start the server, open the DB, serve `web/` as static
+      stats: { total_confirmed_entries_sitewide } }`). Documented in
+      `PLAN.md`'s phased build order, step 2.
+- [x] Wire `src/routes/mod.rs` to route requests to the right handler.
+- [x] `src/main.rs`: start the server, open the DB, serve `web/` as static
       files, mount the API routes.
-- [ ] Manual test: hit a known-good date and an empty date with `curl`,
+- [x] Manual test: hit a known-good date and an empty date with `curl`,
       confirm both look right.
 
 ## Phase 3 — Base HTML/CSS/JS shell (no visual identity yet)

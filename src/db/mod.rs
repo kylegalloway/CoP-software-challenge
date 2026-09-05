@@ -26,7 +26,7 @@ fn seed_if_empty(conn: &Connection) -> rusqlite::Result<()> {
 
         for entry in &seed_entries {
             conn.execute (
-            "INSERT INTO entries (month, day, title, quote, source_url, secondary_source_url, needs_secondary_source, needs_specific_year, specific_year, image_url, submitted_by) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
+            "INSERT INTO entries (month, day, title, quote, source_url, secondary_source_url, needs_secondary_source, needs_specific_year, specific_year, image_url, status) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
             rusqlite::params![
                 entry.month,
                 entry.day,
@@ -38,7 +38,7 @@ fn seed_if_empty(conn: &Connection) -> rusqlite::Result<()> {
                 entry.needs_specific_year,
                 entry.specific_year,
                 entry.image_url,
-                entry.submitted_by
+                entry.status,
             ],
         )?;
         }

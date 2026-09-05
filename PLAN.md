@@ -57,7 +57,7 @@ on the backend too, not just the frontend.
 ## Data model (sketch — human to finalize in `src/db/schema.sql`)
 
 - `entries`: id, month, day, title (film/show), quote, source_url,
-  submitted_by, status (pending/confirmed/rejected), created_at
+  status (pending/confirmed/rejected), created_at
 - `votes`: id, entry_id, direction (+1/-1), voter_fingerprint, created_at
 
 Seed schema for the corpus-mining output lives in
@@ -109,7 +109,25 @@ when a skin is added/removed.
 
 1. **Data model + schema** — `src/db/schema.sql`, `data/seed/dates.schema.json`.
 2. **Minimal API** — `GET /api/date/:mm-dd` serving the hand-verified seed
-   list only (skip mining/crowdsourcing at first).
+   list only (skip mining/crowdsourcing at first). Response shape (decided,
+   implemented in `src/routes/dates.rs`):
+
+   ```json
+   {
+     "date": "10-21",
+     "entries": [ /* full Entry rows, minus submitted_by */ ],
+     "stats": { "global_total_confirmed_entries": 3 }
+   }
+   ```
+
+   `entries` only ever contains `status: "confirmed"` rows for the given
+   `month`/`day`; an empty array is a valid, honest response for "not a
+   notable date." `specific_year` is present and `null` on every entry
+   (never omitted) so frontends can check for non-null to render a
+   year-specific date. `stats.global_total_confirmed_entries` is a sitewide
+   count, independent of the date filter. Malformed or out-of-range
+   `mm-dd` (month outside 1-12, day outside 1-31, unparseable) is a `400`,
+   distinct from a valid-but-empty date.
 3. **Base HTML/CSS/JS shell** — `web/index.html`, `core.css`, `core.js`,
    fetches from the API and renders with zero visual identity of its own.
 4. **Skin mechanism** — registry + picker + first skin (`modern`) to prove

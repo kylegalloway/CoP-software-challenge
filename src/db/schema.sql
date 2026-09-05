@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS entries (
     ),
     image_url TEXT,
     status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','confirmed','rejected')),
-    submitted_by TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

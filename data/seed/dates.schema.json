@@ -58,12 +58,6 @@
                 "string",
                 "null"
             ]
-        },
-        "submitted_by": {
-            "type": [
-                "string",
-                "null"
-            ]
         }
     },
     "if": {
