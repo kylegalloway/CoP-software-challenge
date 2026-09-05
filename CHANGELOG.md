@@ -77,8 +77,3 @@ once there's a first release.
   system libsqlite3), `serde`/`serde_json`.
 - `src/main.rs` hello-world body — Phase 0's toolchain sanity check
   (`cargo build`/`cargo run`) before any real logic goes in.
-
-### Fixed
-
-- `.gitignore`: removed a duplicate `/target` entry `cargo init` appended
-  below the hand-written rules; kept the original single entry at the top.
