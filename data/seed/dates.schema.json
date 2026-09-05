@@ -8,7 +8,8 @@
         "title",
         "quote",
         "source_url",
-        "needs_secondary_source"
+        "needs_secondary_source",
+        "needs_specific_year"
     ],
     "properties": {
         "month": {
@@ -43,6 +44,15 @@
         "needs_secondary_source": {
             "type": "boolean"
         },
+        "needs_specific_year": {
+            "type": "boolean"
+        },
+        "specific_year": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
         "image_url": {
             "type": [
                 "string",
@@ -54,6 +64,30 @@
                 "string",
                 "null"
             ]
+        }
+    },
+    "if": {
+        "properties": {
+            "needs_specific_year": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "required": [
+            "specific_year"
+        ],
+        "properties": {
+            "specific_year": {
+                "type": "integer"
+            }
+        }
+    },
+    "else": {
+        "properties": {
+            "specific_year": {
+                "const": null
+            }
         }
     },
     "additionalProperties": false

@@ -18,6 +18,8 @@ pub struct Entry {
     pub source_url: String,
     pub secondary_source_url: Option<String>,
     pub needs_secondary_source: bool,
+    pub needs_specific_year: bool,
+    pub specific_year: Option<u16>,
     pub image_url: Option<String>,
     pub status: EntryStatus,
     pub submitted_by: Option<String>,
@@ -33,6 +35,8 @@ pub struct NewEntry {
     pub source_url: String,
     pub secondary_source_url: Option<String>,
     pub needs_secondary_source: bool,
+    pub needs_specific_year: bool,
+    pub specific_year: Option<u16>,
     pub image_url: Option<String>,
     pub submitted_by: Option<String>,
 }

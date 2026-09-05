@@ -7,6 +7,11 @@ CREATE TABLE IF NOT EXISTS entries (
     source_url TEXT NOT NULL,
     secondary_source_url TEXT,
     needs_secondary_source INTEGER NOT NULL DEFAULT 0 CHECK (needs_secondary_source IN (0,1)),
+    needs_specific_year INTEGER NOT NULL DEFAULT 0 CHECK (needs_specific_year IN (0,1)),
+    specific_year INTEGER CHECK (
+        (needs_specific_year = 0 AND specific_year IS NULL) OR
+        (needs_specific_year = 1 AND specific_year IS NOT NULL)
+    ),
     image_url TEXT,
     status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','confirmed','rejected')),
     submitted_by TEXT,
