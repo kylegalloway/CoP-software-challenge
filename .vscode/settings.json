@@ -1,0 +1,37 @@
+{
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.cargo.features": "all",
+  "editor.formatOnSave": true,
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "files.exclude": {
+    "**/target": true,
+    "**/*.db": true,
+    "**/*.sqlite": true,
+    "**/*.sqlite3": true
+  },
+  "search.exclude": {
+    "**/target": true
+  },
+  "sqlite-viewer.autoRefresh": true,
+  "cSpell.words": [
+    "rusqlite",
+    "geocities",
+    "mantine",
+    "teletext",
+    "checkiday",
+    "sqlx"
+  ]
+}
