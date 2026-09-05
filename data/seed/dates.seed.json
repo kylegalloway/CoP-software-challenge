@@ -1,0 +1,24 @@
+[
+    {
+        "month": 10,
+        "day": 3,
+        "title": "Mean Girls",
+        "quote": "On October 3rd, he asked me what day it was.",
+        "source_url": "https://nofilmschool.com/why-mean-girls-day",
+        "secondary_source_url": "https://www.imdb.com/title/tt0377092/trivia/?item=tr4432972&ref_=ext_shr_lnk",
+        "needs_secondary_source": false,
+        "image_url": null,
+        "submitted_by": null
+    },
+    {
+        "month": 4,
+        "day": 25,
+        "title": "Miss Congeniality",
+        "quote": "April 25th. Because it's not too hot, not too cold, all you need is a light jacket",
+        "source_url": "https://decider.com/2022/04/25/social-media-users-celebrate-april-25-miss-congeniality-day/",
+        "secondary_source_url": "https://www.imdb.com/title/tt0212346/quotes/?item=qt0451667&ref_=ext_shr_lnk",
+        "needs_secondary_source": false,
+        "image_url": null,
+        "submitted_by": null
+    }
+]
