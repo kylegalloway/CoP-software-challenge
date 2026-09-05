@@ -10,6 +10,17 @@ once there's a first release.
 
 ### Added
 
+- Phase 1.5 retrofit: `needs_specific_year` (bool) and `specific_year`
+  (nullable integer) columns on `entries` (`src/db/schema.sql`), gated by a
+  `CHECK` so a year can only be set when the flag is true and vice versa —
+  mirrors the existing `needs_secondary_source` pattern. Mirrored in
+  `data/seed/dates.schema.json` (new required field, plus an `if`/`then`/
+  `else` enforcing the same coupling at the JSON level), `src/models.rs`
+  (`Entry`/`NewEntry`), and the seed insert in `src/db/mod.rs`. *Back to the
+  Future Part II* added to `data/seed/dates.seed.json` as the first
+  year-specific entry (`specific_year: 2015`). `GET /api/date/:mm-dd`
+  (Phase 2) will surface this as a flat, always-present, nullable
+  `specific_year` field per entry.
 - Project scaffold: directory structure for a Rust backend (`src/`), a
   skinnable static frontend (`web/`), corpus seed data (`data/seed/`),
   offline corpus-mining tooling (`scripts/seed/`), and ADRs

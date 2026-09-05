@@ -56,25 +56,38 @@ real-world news/history dates once corpus mining starts in Phase 7). The
 current schema/model has no way to express that — needs a retrofit before
 more entries (especially mined ones) make the gap harder to fix.
 
-- [ ] Add `needs_specific_year` (bool) and `specific_year` (nullable
+- [x] Add `needs_specific_year` (bool) and `specific_year` (nullable
       integer) columns to `entries` in `src/db/schema.sql`, mirroring the
       `needs_secondary_source` / (missing) `secondary_source_url` pairing
       style already used for the source-verification fields.
-- [ ] Decide: does `specific_year` require `needs_specific_year = 1`, or
-      can a year be attached even when not strictly "needed" (e.g. flavor
-      info like "this line is from the 1985 original" on a date that's
-      otherwise evergreen)? Consider a `CHECK` constraint once decided.
-- [ ] Update `data/seed/dates.schema.json` with the new optional fields.
-- [ ] Update `src/models.rs`: add the fields to `Entry` and `NewEntry`.
-- [ ] Update `src/db/mod.rs`'s seed insert (column list + `params!`) to
+- [x] Decided: **coupled** — `specific_year` requires `needs_specific_year =
+      1` (and vice versa: `needs_specific_year = 1` requires a non-null
+      year). Enforced with a `CHECK` constraint in `schema.sql`. Flavor-only
+      year mentions (e.g. "from the 1985 original") are out of scope for
+      this field — it means "this date only holds for one calendar year,"
+      not general trivia.
+- [x] Update `data/seed/dates.schema.json` with the new fields.
+- [x] Update `src/models.rs`: add the fields to `Entry` and `NewEntry`.
+- [x] Update `src/db/mod.rs`'s seed insert (column list + `params!`) to
       include the new columns.
-- [ ] Retrofit existing seed entries: is *Back to the Future Part II*
-      (if/when added) `specific_year: 2015`? Any other seeded/mined entries
-      that are actually year-specific rather than annually-recurring?
-- [ ] Decide how `GET /api/date/:mm-dd` (Phase 2) should surface this to
-      the frontend — e.g. does the response need a `specific_year` field
-      per entry, and should skins render "October 21, 2015" differently
-      than a recurring "October 21" when it's set?
+- [x] Retrofit existing seed entries: *Back to the Future Part II* added to
+      `dates.seed.json` with `needs_specific_year: true, specific_year:
+      2015`. Mean Girls and Miss Congeniality remain annually-recurring
+      (`needs_specific_year: false`).
+- [x] Decided: `GET /api/date/:mm-dd` (Phase 2) will surface this as a flat
+      nullable `specific_year` field on each entry in the response (present
+      and `null` when not year-specific, not omitted). Frontend/skins can
+      check for non-null and render "October 21, 2015" instead of a bare
+      "October 21".
+- [x] `data/seed/dates.schema.json`: added `needs_specific_year` to the
+      top-level `required` list, matching `Entry`/`NewEntry`'s non-optional
+      `bool` in `src/models.rs`.
+- [x] `data/seed/dates.schema.json`: added an `if`/`then`/`else` mirroring
+      the SQL `CHECK` invariant — `needs_specific_year: true` requires
+      `specific_year` to be a present integer; otherwise `specific_year`
+      must be `null`. Verified with `jsonschema` against all three seed
+      entries (pass) and two deliberately-invalid cases (year set without
+      the flag; flag set without a year — both correctly rejected).
 
 ## Phase 2 — Minimal API (seed data only, no submit/vote yet)
 
