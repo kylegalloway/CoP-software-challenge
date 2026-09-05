@@ -216,3 +216,49 @@ factually ("competes on four axes," "hit several axes at once") without
 that language, so left them unchanged. Edited README.md's opening paragraph
 to drop the "entered sideways" clause while keeping the four-axis summary.
 No source code touched.
+
+## 2026-09-05 — Phase 1 walkthrough (human hand-wrote all code); one rule violation and its cleanup
+Asked: Start Phase 1 (data model & schema) after ~10 years away from Rust —
+requested syntax examples/explanations rather than written code. Discussed
+`schema.sql` design (entries/votes tables, CHECK constraints, FK cascade,
+PRAGMA foreign_keys) and had Claude write it directly — caught immediately
+("Whoa.... You will never generate code or edit it....."), reverted, and a
+per-repo memory saved on Claude's side reinforcing AGENTS.md's existing
+hand-written-code rule (examples must stay skeletal/generic, not
+copy-pasteable). Then walked through, with the human writing every line:
+`data/seed/dates.schema.json` and `dates.seed.json` (Mean Girls, Miss
+Congeniality — placeholder source_urls initially, later replaced with real
+citations per `docs/corpus-verification.md`), `src/models.rs`
+(`Entry`/`NewEntry`/`EntryStatus`), `src/db/mod.rs` (`open()` +
+`seed_if_empty()`, including a review pass that caught a `con`/`conn` typo,
+a missing `use` import, and an early wrong-shape attempt to hand parsed
+JSON to `execute_batch`), and `src/main.rs` (env-var-overridable `DB_PATH`,
+`#[tokio::main]`, a `?`-in-non-Result-fn compile error fixed by switching
+to `.expect(...)`). Confirmed working via `cargo run` against a freshly
+deleted DB (seeded 2 rows, printed count). Also added a **Phase 1.5** TODO
+section (specific-year dates, e.g. Back to the Future Part II's 2015 —
+`needs_specific_year`/`specific_year` columns, gated by a CHECK so the year
+can only be set when the flag is true, mirroring the existing
+`needs_secondary_source` pattern) ahead of starting that work.
+Did (Claude, directly): reverted the one unauthorized `schema.sql` write;
+checked off completed Phase 1 boxes in `TODO.md` (with two left honestly
+unchecked — seed verification, and threshold/anti-abuse *logic* which is
+Phase 6, schema-only support ships now); wrote the Phase 1.5 TODO section
+per the human's request. Ran `/commit`, which surfaced that this session's
+first 3 commits (schema+models+db+main, seed source verification, Phase
+1.5 TODO) had drifted from repo convention — plain titles, unsigned, with
+Claude co-attribution — despite `docs/agent-log.md` showing prior sessions
+used signed, chaotic/cultural-reference titles with no AI attribution.
+Root-caused: git signing config (`user.signingkey`/`commit.gpgsign`) was
+simply unset in the current environment even though the underlying gpg key
+(`7FE06015DBF950DB761C97C8EA8F34B99FACB500`) still exists — restored both
+**globally** (flagged to the human as a global, not repo-local, config
+change) and verified a test signature. Rewrote the 3 non-conforming
+commits via `git reset --soft` back to the last known-good commit
+(`b39c1e1`) and recreated them as 2 signed, on-convention commits
+(`3e39a0d` "Jurassic Park... entries now walk", `769ab6b` "example.com
+alibi falls apart") — folding the Phase 1.5 TODO addition into the first
+since it's a small addition to the same file already being committed.
+Also caught and is fixing, via this entry, that `docs/agent-log.md` itself
+had gone unupdated for this entire session despite AGENTS.md's
+every-single-interaction logging rule — this entry backfills that gap.
