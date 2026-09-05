@@ -1,0 +1,21 @@
+{
+  // Tuned to this repo's existing doc style rather than the strict defaults.
+  "config": {
+    "default": true,
+
+    // Docs use "-" for bullets throughout; don't force "*" or "+".
+    "MD004": { "style": "dash" },
+
+    // Long-form docs; line length isn't enforced.
+    "MD013": false,
+
+    // Table pipe spacing varies (compact vs. padded) across existing docs.
+    "MD060": false
+  },
+
+  "globs": ["**/*.md"],
+  // agent-log.md is an append-only log (see AGENTS.md) — past entries are
+  // never reformatted to satisfy new lint rules, so it's excluded outright
+  // rather than disabling rules repo-wide.
+  "ignores": ["target/**", "node_modules/**", "docs/agent-log.md"]
+}

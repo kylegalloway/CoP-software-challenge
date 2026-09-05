@@ -9,6 +9,7 @@ once there's a first release.
 ## [Unreleased]
 
 ### Added
+
 - Project scaffold: directory structure for a Rust backend (`src/`), a
   skinnable static frontend (`web/`), corpus seed data (`data/seed/`),
   offline corpus-mining tooling (`scripts/seed/`), and ADRs
@@ -49,6 +50,19 @@ once there's a first release.
   target (clone-and-run only, auto-seeded on first boot).
 
 ### Changed
+
 - `PLAN.md`, `TODO.md`, `AGENTS.md` updated to reference the new ADRs in
   place of the open-question/TBD markers they previously carried; `TODO.md`
   Phase 1/6 updated for per-entry image support.
+- Tagged unlabeled fenced code blocks in `PLAN.md`/`README.md`/
+  `docs/dev-guide.md` with a language (`text`/`sh`) and added blank lines
+  around headings/lists in `CHANGELOG.md`, to satisfy the new markdownlint
+  config below without changing any actual content.
+
+### Added
+
+- `.markdownlint-cli2.jsonc` — lint config tuned to this repo's existing
+  Markdown conventions (dash-style lists, no line-length cap, relaxed table
+  pipe spacing) rather than the strict defaults; `docs/agent-log.md` is
+  excluded outright since it's an append-only log whose past entries are
+  never reformatted.

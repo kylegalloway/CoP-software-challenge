@@ -5,14 +5,16 @@
 One-time machine setup, macOS/Homebrew-first:
 
 1. **Rust, via `rustup`** — *not* `brew install rust`. Install from
-   https://rustup.rs (`curl --proto '=https' --tlsv1.2 -sSf
+   [rustup.rs](https://rustup.rs) (`curl --proto '=https' --tlsv1.2 -sSf
    https://sh.rustup.rs | sh`). This is the one exception to "prefer
    Homebrew": rustup manages toolchains and components (`clippy`,
    `rustfmt`) directly, which the Homebrew `rust` formula doesn't do well.
    After installing, run:
-   ```
+
+   ```sh
    rustup component add clippy rustfmt
    ```
+
    Check with `cargo --version`, `cargo clippy --version`, `cargo fmt
    --version`.
 2. **Everything else, via Homebrew** — run `brew bundle` from the repo
@@ -72,7 +74,7 @@ No Node runtime is required anywhere in this project.
 
 ## Inspecting the database directly
 
-```
+```sh
 sqlite3 data/app.db
 .tables
 .schema entries

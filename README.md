@@ -33,7 +33,7 @@ Scaffold only. Nothing runs yet.
 
 ## Layout
 
-```
+```text
 src/            Rust backend (API, static file serving, DB access)
 web/            Static frontend: shell + skins
 data/seed/      Corpus seed data and its schema

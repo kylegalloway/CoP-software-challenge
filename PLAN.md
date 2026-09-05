@@ -19,7 +19,7 @@ axes at once:
 
 ## Architecture
 
-```
+```text
 Browser
   -> GET /                  (index.html + core.css + core.js, tiny)
   -> GET /skins/registry.json
