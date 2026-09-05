@@ -71,3 +71,14 @@ once there's a first release.
   pipe spacing) rather than the strict defaults; `docs/agent-log.md` is
   excluded outright since it's an append-only log whose past entries are
   never reformatted.
+- `Cargo.toml` dependencies for the axum backend: `axum`, `tokio`
+  (`rt-multi-thread`, `macros`), `tower-http` (`fs`, for `ServeDir` static
+  file serving), `rusqlite` (`bundled`, so clone-and-run doesn't need a
+  system libsqlite3), `serde`/`serde_json`.
+- `src/main.rs` hello-world body — Phase 0's toolchain sanity check
+  (`cargo build`/`cargo run`) before any real logic goes in.
+
+### Fixed
+
+- `.gitignore`: removed a duplicate `/target` entry `cargo init` appended
+  below the hand-written rules; kept the original single entry at the top.

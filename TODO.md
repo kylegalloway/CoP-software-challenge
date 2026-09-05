@@ -6,12 +6,12 @@ you go by hand. Items originally marked **(ADR)** are now resolved — see
 
 ## Phase 0 — Project bootstrap
 
-- [ ] HTTP layer: axum, per [ADR-0001](./docs/decisions/0001-http-layer.md).
-- [ ] Write `Cargo.toml`: package metadata, chosen HTTP crate (or none),
+- [x] HTTP layer: axum, per [ADR-0001](./docs/decisions/0001-http-layer.md).
+- [x] Write `Cargo.toml`: package metadata, chosen HTTP crate (or none),
       `rusqlite`, `serde`/`serde_json` for JSON.
-- [ ] `cargo build` sanity check with just a "hello world" `main.rs` before
+- [x] `cargo build` sanity check with just a "hello world" `main.rs` before
       writing real logic, to confirm toolchain/deps work.
-- [ ] Confirm SQLite file location/name (e.g. `data/app.db`, already
+- [x] Confirm SQLite file location/name (e.g. `data/app.db`, already
       gitignored) and that it's created on first run if missing.
 
 ## Phase 1 — Data model & schema
