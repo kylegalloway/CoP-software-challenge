@@ -51,7 +51,7 @@ Full rationale and phased plan: see `PLAN.md`.
 
 ## Architecture at a glance
 
-- `src/` — Rust backend (axum or std-only, TBD by the human). Serves the API
+- `src/` — Rust backend (axum, per [ADR-0001](./docs/decisions/0001-http-layer.md)). Serves the API
   and the static `web/` assets. SQLite via `rusqlite`, no ORM.
 - `web/` — one `index.html`, one `core.css` (structure/reset only, no visual
   identity), one `core.js` (fetches data, applies the active skin). No skin

@@ -1,13 +1,12 @@
 # TODO — Today in Cinema
 
 Detailed, ordered checklist following `PLAN.md`'s phases. Check items off as
-you go by hand. Anything marked **(ADR)** should get a short writeup in
-`docs/decisions/` before you commit to it, per the open questions in
-`PLAN.md`.
+you go by hand. Items originally marked **(ADR)** are now resolved — see
+`docs/decisions/` (linked inline below).
 
 ## Phase 0 — Project bootstrap
 
-- [ ] Decide axum vs. std-only `TcpListener` for the HTTP layer **(ADR)**.
+- [ ] HTTP layer: axum, per [ADR-0001](./docs/decisions/0001-http-layer.md).
 - [ ] Write `Cargo.toml`: package metadata, chosen HTTP crate (or none),
       `rusqlite`, `serde`/`serde_json` for JSON.
 - [ ] `cargo build` sanity check with just a "hello world" `main.rs` before
@@ -20,17 +19,18 @@ you go by hand. Anything marked **(ADR)** should get a short writeup in
 - [ ] Write `src/db/schema.sql`:
   - `entries` table: `id`, `month` (1-12), `day` (1-31), `title`, `quote`,
     `source_url`, `secondary_source_url` (nullable), `needs_secondary_source`
-    (bool), `status` (`pending`/`confirmed`/`rejected`), `submitted_by`
-    (nullable — no login, so this might just be a display name string),
-    `created_at`.
+    (bool), `image_url` (nullable — see ADR-0006, app-hosted path not an
+    external URL), `status` (`pending`/`confirmed`/`rejected`),
+    `submitted_by` (nullable — no login, so this might just be a display
+    name string), `created_at`.
   - `votes` table: `id`, `entry_id`, `direction` (+1/-1), `voter_fingerprint`
-    (see anti-abuse ADR below), `created_at`.
+    (see [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)), `created_at`.
   - Indexes: at least `(month, day)` on `entries` for the hot lookup path.
-- [ ] Decide + document the moderation threshold (net votes needed to flip
-      `pending` → `confirmed`) **(ADR)**.
-- [ ] Decide anti-abuse approach for voting (IP-based fingerprint? cookie?
-      rate limit? explicitly no login is fine — just write down the
-      reasoning and the limitation) **(ADR)**.
+- [ ] Moderation threshold: net +3 votes, DB-only admin override, per
+      [ADR-0002](./docs/decisions/0002-moderation-threshold.md).
+- [ ] Vote anti-abuse: cookie fingerprint, no rate limit, votes mutable, per
+      [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md) — remember the
+      `(entry_id, voter_fingerprint)` unique constraint this implies.
 - [ ] Write `data/seed/dates.schema.json` describing the shape of a seed
       entry (mirrors the `entries` columns minus DB-only fields like `id`).
 - [ ] Hand-author a small, *verified* seed list in
@@ -120,6 +120,16 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
 
 - [ ] `POST /api/submit` in `src/routes/submit.rs` — validate required
       fields (month/day/title/quote/source_url), insert as `status: pending`.
+- [ ] Image upload handling for submissions, per **ADR-0006**: accept an
+      optional image on `POST /api/submit`, resize to a max dimension (e.g.
+      800px wide) and re-encode to a single consistent format (e.g.
+      JPEG/WebP) server-side regardless of input, store under a gitignored
+      `data/uploads/` dir, save the resulting path/URL to `entries.image_url`.
+      Serve uploads via a static route, separate from the base API response.
+- [ ] Wire the frontend to request images lazily (`loading="lazy"` and/or
+      fetch-on-reveal) — the base `GET /api/date/:mm-dd` response carries
+      only `image_url` (or `null`), never image bytes, so a page load's
+      guaranteed footprint is unaffected by whether an entry has an image.
 - [ ] Basic input sanitization/length limits (this is public-facing).
 - [ ] `POST /api/vote` in `src/routes/vote.rs` — record a vote, recompute
       whether the entry crosses the moderation threshold from Phase 1, flip
@@ -136,8 +146,8 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
 
 ## Phase 7 — Corpus growth: mining + verification
 
-- [ ] Pick a subtitle corpus source for `scripts/seed/mine_corpus.py`
-      (e.g. OpenSubtitles bulk data) **(ADR — note licensing/usage terms)**.
+- [ ] Corpus source: OPUS/OpenSubtitles dump, single-line excerpts only, per
+      [ADR-0005](./docs/decisions/0005-corpus-mining-source.md).
 - [ ] Write the mining script: regex/NLP pass for absolute date mentions,
       output candidate JSON matching `data/seed/dates.schema.json`, status
       `pending`.
@@ -155,8 +165,11 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
 
 ## Phase 8 — Footprint budget
 
-- [ ] Decide the actual byte budget for a default page load (uncompressed
-      and gzip'd) **(ADR)**.
+- [ ] Byte budget: sub-20KB uncompressed is the aim, but stays a soft,
+      non-gating target for now — see `PLAN.md`'s footprint section.
+      Revisit with a hard number once the app is running and there's real
+      data (especially entry images, per
+      [ADR-0006](./docs/decisions/0006-entry-images.md)) to measure.
 - [ ] Write `scripts/measure_footprint.sh`: curl the page + core assets +
       one skin's assets + one API response, sum bytes, compare to budget.
 - [ ] Run it against every skin, not just the default — some (geocities,
@@ -167,10 +180,11 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
 
 ## Phase 9 — Polish / submission-readiness
 
-- [ ] Fill in `README.md`'s "Running" section with real instructions once
-      the binary actually runs.
-- [ ] Decide deploy target (if any) for the actual challenge submission
-      **(ADR if non-trivial)**.
+- [ ] Fill in `README.md`'s "Running" section with real, clone-and-run
+      instructions once the binary actually runs — cover both first-run
+      auto-seeding and how to manually re-seed/extend the corpus later, per
+      [ADR-0007](./docs/decisions/0007-deploy-target.md) (no hosted deploy;
+      DB and uploaded images stay gitignored, never committed).
 - [ ] Final pass on all 13 skins for the "no notable date today" empty
       state — this is an easy thing to forget and it's the more *honest*
       state, worth getting right.

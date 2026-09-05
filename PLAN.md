@@ -43,6 +43,10 @@ shell, one core CSS, one core JS, one skin CSS(+js), one JSON response for
 the day. Adding skin #13 or corpus entry #10,000 changes none of that.
 `scripts/measure_footprint.sh` should assert a byte-budget per page load in
 CI/manually (target: TBD, aim sub-20KB uncompressed for the default skin).
+This stays a **soft, non-gating target for now** — revisit once the app is
+actually running and there's real data to measure against, and especially
+once the per-entry image question (see below) is resolved, since images
+will dominate the byte count far more than markup/CSS/JS ever would.
 
 ### Why Rust
 
@@ -119,11 +123,20 @@ when a skin is added/removed.
    budget, document the number somewhere visible on the site itself (nice
    flex if true).
 
-## Open questions (resolve as ADRs in `docs/decisions/` if non-trivial)
+## Decisions
 
-- axum vs. std-only HTTP handling.
-- Moderation threshold (votes needed to confirm an entry).
-- Anti-abuse for voting (fingerprint? rate limit? no login is a deliberate
-  choice worth writing down).
-- Whether "no notable date today" is shown identically across all 12 skins
-  or gets its own per-skin flavor text.
+All originally-open questions are now resolved — see `docs/decisions/`:
+
+- HTTP layer: axum ([ADR-0001](./docs/decisions/0001-http-layer.md)).
+- Moderation threshold: net +3 votes, DB-only admin override
+  ([ADR-0002](./docs/decisions/0002-moderation-threshold.md)).
+- Vote anti-abuse: cookie fingerprint, no rate limit, votes are mutable
+  ([ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)).
+- Empty-state flavor text: per-skin via CSS generated content
+  ([ADR-0004](./docs/decisions/0004-empty-state-per-skin.md)).
+- Corpus mining source: OPUS/OpenSubtitles, single-line excerpts only
+  ([ADR-0005](./docs/decisions/0005-corpus-mining-source.md)).
+- Per-entry scene images: app-hosted, capped, lazy-loaded
+  ([ADR-0006](./docs/decisions/0006-entry-images.md)).
+- Deploy target: clone-and-run only, auto-seeded on first boot
+  ([ADR-0007](./docs/decisions/0007-deploy-target.md)).
