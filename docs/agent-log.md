@@ -121,3 +121,18 @@ existing tools (rustc/cargo already via rustup with clippy+rustfmt
 components, sqlite/python/gh already present) and, per the user's
 confirmation, ran `brew bundle`, which installed the one missing tool
 (`watchexec`) and upgraded `gh`/VS Code as a side effect.
+
+## 2026-09-05 — First commits: split the scaffold into 8 logical commits
+Asked: Run the `/commit` skill to commit the accumulated scaffold.
+Did: No prior commits existed. Checked for stray TODO comments in code
+(none — all source files are empty) and confirmed CHANGELOG.md already
+covered the full scaffold, so no changelog edit was needed. Split the
+untracked scaffold into 8 small, signed (`-S`) commits by logical
+grouping, each with a chaotic/funny title carrying a rotated cultural
+reference per the global commit convention: (1) project meta — README,
+LICENSE, .gitignore, challenge.png, Cargo.toml, Brewfile; (2) governance
+docs — AGENTS.md, PLAN.md, TODO.md; (3) docs/ — agent-log.md,
+corpus-verification.md, dev-guide.md, testing-plan.md, decisions/; (4)
+src/ Rust scaffold; (5) web/ shell + all 13 skins; (6) data/seed/ +
+scripts/; (7) CHANGELOG.md; (8) .vscode/ dev environment config.
+Verified each commit's signature with `git log -1 --format="%G? %h %s"`.
