@@ -297,3 +297,51 @@ trailer) and this repo's `/commit` skill/history (no AI attribution,
 ever) — the human confirmed the repo convention wins, so no trailer was
 added to either commit, and a cross-session memory note was written
 (outside this repo) so future sessions here don't re-ask.
+
+## 2026-09-05 — Phase 2: minimal `GET /api/date/:mm-dd` API
+Asked: start Phase 2 (minimal read-only API over seed data); then, once
+implemented, sketch Rust for the route handler and query functions on
+request, review each hand-written iteration, help decide the JSON
+response shape, and finally check off TODO.md, update PLAN.md, and run
+`/commit`.
+Did: Confirmed AGENTS.md's rule (human writes all code) and reviewed
+TODO.md/PLAN.md for open Phase 2 decisions before anything was written.
+At the human's request, sketched pseudocode/comments for
+`src/routes/dates.rs`, `src/routes/mod.rs`, and the `main.rs` wiring —
+route handler shape, state plumbing, query outlines — for the human to
+transcribe. The human then wrote the real code iteratively; reviewed each
+pass and caught several real bugs before `cargo build` ran clean:
+a missing semicolon and wrong `Arc<Connection>`/`Arc<Mutex<Connection>>`
+mismatch in `main.rs`; `State<T>` used as a plain argument type instead of
+`with_state`'s expected raw `T` in `routes/mod.rs`; axum 0.8's `{param}`
+path syntax (caught, but the human had already fixed it before I
+re-checked); a fragile `SELECT *` paired with positional `row.get(N)`
+indices tied to `schema.sql`'s column order with no compiler protection
+(flagged, human switched to an explicit column list); a missing
+`rusqlite::types::FromSql` impl for `EntryStatus` (sketched the impl,
+human wrote it) and later a missing mirror `ToSql` impl once the human
+added `status`/tried to write it during seeding (sketched, human wrote
+it) — confirmed both compile errors for real via `cargo build` before
+suggesting fixes, not just from reading the code. Also confirmed a std
+vs. tokio `Mutex` question (std is correct here, since `rusqlite` calls
+never cross an `.await`). Ran the built binary against a scratch DB
+(`DB_PATH=/tmp/test_app.db`) three times over the course of the session
+to smoke-test with `curl`: an out-of-range `mm-dd` (400), a valid but
+non-notable date (200, empty `entries`), and — after the human flipped
+seed entries to `status: "confirmed"` and added `status`/`created_at` to
+`NewEntry`/the insert (only `status` actually took effect; `created_at`
+is silently schema-defaulted since it was never added to the insert
+column list, noted but left alone) — a populated response, confirming
+`specific_year: 2015` on *Back to the Future Part II* surfaces exactly
+per the Phase 1.5 decision. Flagged (not fixed) a couple of iteration
+missteps the human then corrected themselves: seed `image_url` values
+that were article links rather than actual images (against ADR-0006),
+and `NewEntry`/insert not including `status` at all initially so the
+JSON edit was silently ignored. Updated `TODO.md` (checked off all five
+Phase 2 items), `PLAN.md` (documented the finalized response shape —
+full `Entry` rows minus `submitted_by`, sitewide `stats`, `400` vs. empty
+`entries` distinction — under the phased build order's step 2), and
+`CHANGELOG.md` (Unreleased entry for Phase 2), all as documentation per
+AGENTS.md. Ran `/commit`: staged and committed the Phase 2 code +
+data/seed changes in one commit (`07769d0`), no `Co-Authored-By` trailer
+per the standing repo-convention memory from the Phase 1.5 session.

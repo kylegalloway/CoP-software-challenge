@@ -10,6 +10,17 @@ once there's a first release.
 
 ### Added
 
+- Phase 2: `GET /api/date/:mm-dd` in `src/routes/dates.rs`, wired through
+  `src/routes/mod.rs` and mounted alongside static file serving in
+  `src/main.rs`. Returns confirmed entries for a given month/day plus a
+  sitewide `stats.global_total_confirmed_entries` count; an empty
+  `entries` array is the honest "not a notable date" response, distinct
+  from a `400` on malformed/out-of-range `mm-dd`. `EntryStatus` gained
+  `FromSql`/`ToSql` impls in `src/models.rs` so it round-trips through
+  SQLite as its lowercase string form. The `submitted_by` field was
+  dropped from `entries`/`Entry`/`NewEntry` entirely (no login, no plan to
+  store submitter names). Response shape documented in `PLAN.md`'s phased
+  build order.
 - Phase 1.5 retrofit: `needs_specific_year` (bool) and `specific_year`
   (nullable integer) columns on `entries` (`src/db/schema.sql`), gated by a
   `CHECK` so a year can only be set when the flag is true and vice versa —
