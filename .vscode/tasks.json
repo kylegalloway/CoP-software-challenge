@@ -5,32 +5,52 @@
       "label": "cargo build",
       "type": "shell",
       "command": "cargo build",
-      "group": { "kind": "build", "isDefault": true },
-      "problemMatcher": ["$rustc"]
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$rustc"
+      ]
     },
     {
       "label": "cargo run",
       "type": "shell",
       "command": "cargo run",
-      "problemMatcher": ["$rustc"]
+      "problemMatcher": [
+        "$rustc"
+      ]
     },
     {
       "label": "cargo test",
       "type": "shell",
       "command": "cargo test",
-      "group": { "kind": "test", "isDefault": true },
-      "problemMatcher": ["$rustc"]
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$rustc"
+      ]
     },
     {
       "label": "cargo clippy",
       "type": "shell",
       "command": "cargo clippy -- -D warnings",
-      "problemMatcher": ["$rustc"]
+      "problemMatcher": [
+        "$rustc"
+      ]
     },
     {
       "label": "measure footprint",
       "type": "shell",
       "command": "bash scripts/measure_footprint.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "verify db schema",
+      "type": "shell",
+      "command": "sqlite3 /tmp/test.db < ./src/db/schema.sql && sqlite3 /tmp/test.db .tables",
       "problemMatcher": []
     }
   ]

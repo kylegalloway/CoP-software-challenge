@@ -16,7 +16,7 @@ you go by hand. Items originally marked **(ADR)** are now resolved — see
 
 ## Phase 1 — Data model & schema
 
-- [ ] Write `src/db/schema.sql`:
+- [x] Write `src/db/schema.sql`:
   - `entries` table: `id`, `month` (1-12), `day` (1-31), `title`, `quote`,
     `source_url`, `secondary_source_url` (nullable), `needs_secondary_source`
     (bool), `image_url` (nullable — see ADR-0006, app-hosted path not an
@@ -26,12 +26,15 @@ you go by hand. Items originally marked **(ADR)** are now resolved — see
   - `votes` table: `id`, `entry_id`, `direction` (+1/-1), `voter_fingerprint`
     (see [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)), `created_at`.
   - Indexes: at least `(month, day)` on `entries` for the hot lookup path.
-- [ ] Moderation threshold: net +3 votes, DB-only admin override, per
-      [ADR-0002](./docs/decisions/0002-moderation-threshold.md).
-- [ ] Vote anti-abuse: cookie fingerprint, no rate limit, votes mutable, per
+- [x] Moderation threshold: net +3 votes, DB-only admin override, per
+      [ADR-0002](./docs/decisions/0002-moderation-threshold.md). (schema
+      supports this; the actual recompute-on-vote logic is Phase 6.)
+- [x] Vote anti-abuse: cookie fingerprint, no rate limit, votes mutable, per
       [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md) — remember the
       `(entry_id, voter_fingerprint)` unique constraint this implies.
-- [ ] Write `data/seed/dates.schema.json` describing the shape of a seed
+      (constraint is in schema; cookie-fingerprint mechanism itself is
+      Phase 6.)
+- [x] Write `data/seed/dates.schema.json` describing the shape of a seed
       entry (mirrors the `entries` columns minus DB-only fields like `id`).
 - [ ] Hand-author a small, *verified* seed list in
       `data/seed/dates.seed.json` — quality over volume here. Suggested
@@ -41,9 +44,37 @@ you go by hand. Items originally marked **(ADR)** are now resolved — see
       these through the verification workflow in
       `docs/corpus-verification.md` even though they're well-known — get in
       the habit early.
-- [ ] Write a small import routine (part of `src/db/mod.rs` or a `--seed`
+- [x] Write a small import routine (part of `src/db/mod.rs` or a `--seed`
       CLI flag on the binary) that loads `dates.seed.json` into `entries` on
       first run only (don't duplicate on every boot).
+
+## Phase 1.5 — Retrofit: specific-year dates
+
+Some entries are only true for one specific year, not "this date, every
+year" (e.g. *Back to the Future Part II*'s Oct 21, **2015**; many
+real-world news/history dates once corpus mining starts in Phase 7). The
+current schema/model has no way to express that — needs a retrofit before
+more entries (especially mined ones) make the gap harder to fix.
+
+- [ ] Add `needs_specific_year` (bool) and `specific_year` (nullable
+      integer) columns to `entries` in `src/db/schema.sql`, mirroring the
+      `needs_secondary_source` / (missing) `secondary_source_url` pairing
+      style already used for the source-verification fields.
+- [ ] Decide: does `specific_year` require `needs_specific_year = 1`, or
+      can a year be attached even when not strictly "needed" (e.g. flavor
+      info like "this line is from the 1985 original" on a date that's
+      otherwise evergreen)? Consider a `CHECK` constraint once decided.
+- [ ] Update `data/seed/dates.schema.json` with the new optional fields.
+- [ ] Update `src/models.rs`: add the fields to `Entry` and `NewEntry`.
+- [ ] Update `src/db/mod.rs`'s seed insert (column list + `params!`) to
+      include the new columns.
+- [ ] Retrofit existing seed entries: is *Back to the Future Part II*
+      (if/when added) `specific_year: 2015`? Any other seeded/mined entries
+      that are actually year-specific rather than annually-recurring?
+- [ ] Decide how `GET /api/date/:mm-dd` (Phase 2) should surface this to
+      the frontend — e.g. does the response need a `specific_year` field
+      per entry, and should skins render "October 21, 2015" differently
+      than a recurring "October 21" when it's set?
 
 ## Phase 2 — Minimal API (seed data only, no submit/vote yet)
 

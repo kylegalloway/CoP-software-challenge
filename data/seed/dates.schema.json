@@ -1,0 +1,60 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Seed Entry",
+    "type": "object",
+    "required": [
+        "month",
+        "day",
+        "title",
+        "quote",
+        "source_url",
+        "needs_secondary_source"
+    ],
+    "properties": {
+        "month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+        },
+        "day": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 31
+        },
+        "title": {
+            "type": "string",
+            "minLength": 1
+        },
+        "quote": {
+            "type": "string",
+            "minLength": 1
+        },
+        "source_url": {
+            "type": "string",
+            "format": "uri"
+        },
+        "secondary_source_url": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "uri"
+        },
+        "needs_secondary_source": {
+            "type": "boolean"
+        },
+        "image_url": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "submitted_by": {
+            "type": [
+                "string",
+                "null"
+            ]
+        }
+    },
+    "additionalProperties": false
+}
