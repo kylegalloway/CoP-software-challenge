@@ -4,15 +4,33 @@
 
 ## Palette
 
-Soft, personal, slightly dated pastels: a light background (cream, pale blue, or pale pink depending on the "blogger's" implied taste — pick one and commit), a warm accent color for links and headers (a dusty orange or muted purple reads period-appropriate), and sidebar widget boxes in a slightly different, complementary tint from the main content area to visually separate "post" from "sidebar."
+- Background: `#FFF8F0` (warm cream) — or swap for pale blue `#EAF2FB` / pale pink `#FDEEF4`, pick one.
+- Accent (links, headers): `#C1440E` (dusty orange) — or `#7B5EA7` (muted purple) as an alternate.
+- Sidebar widget background: a slightly darker/complementary tint of the main background, e.g. `#F5E9DC` against the `#FFF8F0` main area.
+- Body text: `#3A3A3A` (soft dark grey, not full black — keeps the warmth).
 
 ## Typography
 
-A friendly, slightly rounded sans-serif or a soft serif for body text — approachable rather than authoritative (contrast directly with `newspaper`'s formal serif). Post titles in a larger, colored, sometimes underlined treatment mimicking early blog templates' default header styles.
+- Body font: `Verdana, Geneva, sans-serif` or `Georgia, serif` — either reads period-appropriate; pick one and use it everywhere (don't mix families).
+- Body size: `14px`, `line-height: 1.6`.
+- Post title: `22px`–`26px`, colored in the accent, `text-decoration: underline` optional.
+- Sidebar widget headers: `13px`, bold, uppercase, `letter-spacing: 0.03em`.
 
 ## Layout
 
-Two-column layout is the signature: a wider "main content" column (the date's entries, framed as a blog post) and a narrower sidebar column containing decorative widgets that don't need real backing data — a "mood: 🎬 nostalgic" indicator, a fake "recent visitors" counter, a static "blogroll" list of other in-universe skins presented as "links I like" (purely decorative text, not real navigation, so it doesn't fight the actual skin-picker `<select>`). The date/skin pickers can be folded into the sidebar as if they were blog widgets themselves.
+- Two-column grid: main content `~65%` width, sidebar `~35%`, `gap: 24px` (`grid-template-columns: 2fr 1fr` is a close approximation).
+- Sidebar widget box: `padding: 12px`, `border: 1px solid` a slightly darker shade of the sidebar tint, `border-radius: 4px`, `margin-bottom: 16px` between widgets.
+- Main content padding: `16px`–`24px`.
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)).
+
+- Image: sits above the post title (blogs of this era put the photo at the top of the post body), `max-width: 100%`, capped height `~240px`, `object-fit: cover`, `border: 4px solid #FFFFFF` plus a thin outer `1px solid` the accent color — mimicking an inserted-into-a-post-editor photo frame.
+- No-image fallback: skip straight to the title — no placeholder box needed, since plenty of real blog posts of this era were text-only.
+- Title: sits directly beneath the image (or at the top if no image), `22px`–`26px` in the accent color, `margin-top: 8px`.
+- Quote/detail text: `14px`, body grey, `margin-top: 4px`, reads like the post's opening paragraph.
+- Entry spacing: `24px` between entries in the main column — enough to read as separate "posts," each with its own image/title/text block.
 
 ## Empty state
 

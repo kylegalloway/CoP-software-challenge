@@ -4,15 +4,36 @@
 
 ## Palette
 
-Mantine's signature indigo/violet-leaning primary color (a mid-saturation blue-violet, roughly Mantine's default `indigo` swatch) against a very light neutral background, with Mantine's characteristic light/dark neutral greys for secondary text and borders. Unlike `modern`'s single restrained accent, this skin can lean into Mantine's fuller swatch system feel — a couple of secondary accent colors (a teal or a soft red) used for state (e.g. the year badge in one accent, an interactive hover state in another) similar to how Mantine's component demos often show multiple color variants side by side.
+- Primary (Mantine's default `indigo.6`): `#4C6EF5`.
+- Secondary accents: teal `#12B886` (e.g. a "confirmed" indicator), soft red `#FA5252` (e.g. an alert state).
+- Background: `#FFFFFF` (cards) on `#F8F9FA` (page).
+- Border/dividers: `#DEE2E6`.
+- Secondary/muted text: `#868E96`.
+- Body text: `#212529`.
 
 ## Typography
 
-A clean geometric sans-serif (Mantine's default stack leans on system fonts too, so this can overlap with `modern` — the differentiation is mostly structural/component-driven, not typographic). Slightly larger, bolder headings than `modern` uses, with consistent, generous heading-to-body size ratios matching component-library defaults.
+- Font: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`.
+- Body size: `16px`, `line-height: 1.55`.
+- Headings: `28px`/`700` weight for the page title, `20px`/`600` for card/section titles — bolder and slightly larger than `modern`'s equivalents.
 
 ## Layout
 
-This is the most "component library demo page" skin in the set: entries render as distinct rounded-corner cards (`border-radius` noticeably larger than `modern`'s, Mantine's default radius scale is quite rounded) with a soft, diffuse box-shadow (not the sharp bevels of `win95`) rather than the flat divided list `modern` uses. Badges (the year badge, a "confirmed" indicator) should use full pill shapes (`border-radius: 9999px`, small padding, colored background with contrasting text) — Mantine's `Badge` component is the direct visual reference. The date and skin pickers can be styled as if they were Mantine's `Select`/`DateInput` components: rounded, bordered, with a visible focus ring in the primary accent color.
+- Card border-radius: `16px` (noticeably rounder than `modern`'s `8px`).
+- Card shadow: `box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.06)` — soft and diffuse, not a hard drop shadow.
+- Badge/pill: `border-radius: 9999px`, `padding: 2px 10px`, `font-size: 12px`, colored background (e.g. teal `#12B886` at low opacity) with matching-hue text.
+- Input focus ring: `box-shadow: 0 0 0 2px rgba(76,110,245,0.35)` (primary indigo at reduced opacity).
+- Card padding: `20px`; gap between cards: `16px`.
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)) — Mantine's own `Card` component commonly ships with an optional image section, so this maps directly onto the library's real pattern.
+
+- Image sits at the top of the card as a `Card.Section`-style block: full card width, `aspect-ratio: 16 / 9`, `object-fit: cover`, rounded only on the top two corners (`border-radius: 16px 16px 0 0`) to match the card's own `16px` radius.
+- No-image fallback: a flat `#F1F3F5` panel at the same `16 / 9` aspect ratio with a centered muted icon/glyph (a simple camera or film-strip glyph, `#ADB5BD`) — mirrors Mantine's own image-placeholder pattern rather than leaving a gap.
+- Title: `18px`/`600`, `padding: 16px 20px 0`, sits directly below the image section.
+- Quote/detail text: `14px`, `#495057`, `padding: 8px 20px 20px`, `line-height: 1.5`.
+- Badge (year, if present): positioned top-right, overlapping the image slightly (`position: absolute`, `top: 12px`, `right: 12px`) using the pill treatment from Layout above — a very characteristic Mantine `Card` + `Badge` combination.
 
 ## Empty state
 

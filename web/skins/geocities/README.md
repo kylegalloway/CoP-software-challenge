@@ -4,15 +4,35 @@
 
 ## Palette
 
-Loud and untuned on purpose: a bright non-web-safe-adjacent background (hot magenta or teal, "because I could pick a color") clashing with a tiled background image texture (stars, flames, or a subtle repeating pattern), pure `#0000FF`/`#800080` link blue/purple straight from browser defaults (never overridden — overriding link colors was an advanced move nobody bothered with), and text color chosen for contrast with the tile rather than any palette logic. Nothing here should look chosen by a designer; it should look chosen by someone excited to have *a* color option at all.
+- Background: hot magenta `#FF00FF` or teal `#00FFCC` — pick one, then tile a small repeating background image over it (stars/flames pattern, `background-repeat: repeat`, a `40px`–`80px` tile size).
+- Links: unvisited `#0000FF`, visited `#800080` — literal browser defaults, never overridden.
+- Body text: whatever survives contrast against the tile — `#000000` on the magenta option, `#FFFFFF` on a darker tile.
+- Heading colors: cycle 3–4 saturated hues per heading, word by word — `#FF0000`, `#FFFF00`, `#00FF00`, `#00FFFF` is a period-accurate rotation.
+- Borders (table-cell look): `2px outset #C0C0C0` / `2px inset #C0C0C0`.
 
 ## Typography
 
-Times New Roman or the default serif for body copy (browsers didn't ship with better defaults yet), with `<font>`-era oversized, multicolored headings — different words in a heading rendered in different colors, a `<blink>`-adjacent treatment even though `<blink>` itself won't fire in modern browsers (approximate with a CSS animation toggling `visibility` or `opacity`, sparingly, as a nod rather than actual eye strain). Centered alignment everywhere; text-align: left would look "unfinished" in this idiom.
+- Font: `"Times New Roman", serif` for body copy.
+- Body size: `16px`–`18px`, default `line-height` (don't set one — unstyled is the point).
+- Headings: `28px`–`36px`, bold, centered (`text-align: center` everywhere, including body copy).
+- Blink-approximation: `animation: blink 1s steps(1) infinite` toggling `opacity: 0`/`1` — use on no more than one element, sparingly.
 
 ## Layout
 
-Everything nested in table-like boxes — even though the real markup is `core.js`'s fixed semantic shell, the CSS should visually fake table cells with visible borders (`border: 2px outset` / `inset` for that beveled table-cell look) around each section (date picker, skin picker, entries list). A hit counter widget (pure CSS/generated-content, static incrementing-looking number, never actually counting anything real) belongs near the footer. A marquee-style horizontal scroll of text (CSS `overflow` + `animation`, since `<marquee>` won't render as one either) announcing something like "WELCOME TO MY PAGE — SIGN MY GUESTBOOK" reinforces the era without needing `skin.js`.
+- Section "cells": `border: 2px outset #C0C0C0`, `padding: 8px`, around each of date picker / skin picker / entries list.
+- Hit counter: static text like `000482`, monospace/digital-looking font (`"Courier New", monospace`), small `12px`–`14px`, bottom of page.
+- Marquee substitute: `white-space: nowrap; overflow: hidden;` container with a child `animation: marquee 12s linear infinite` sliding `translateX(100%)` → `translateX(-100%)`, text like "WELCOME TO MY PAGE — SIGN MY GUESTBOOK".
+
+## Entry card (title + image)
+
+`image_url` is nullable per [ADR-0006](../../../docs/decisions/0006-entry-images.md) — never assume every entry has one.
+
+- Each entry is its own table-cell box: `border: 2px inset #C0C0C0`, `padding: 6px`, `background: #FFFFFF` (a plain rectangle interrupting the tiled page background, like an old "table with a white cell" trick).
+- Image: capped at `150px` wide, `border: 2px solid #000000` and a thick drop shadow substitute (`box-shadow: 3px 3px 0 #000000`, hard-edged, no blur — blur reads too modern). Center it above the title, never beside it.
+- No-image fallback: a static "under construction" style placeholder — a bordered box with centered `12px` text reading something like "IMAGE COMING SOON", same `150px` footprint so layout doesn't shift entry to entry.
+- Title: `20px`, bold, one of the rotating heading colors from the palette above, centered beneath the image.
+- Quote text: `14px`–`16px` body serif, centered, `margin-top: 4px`.
+- Gap between stacked entry cells: `12px`, each cell width capped around `200px`–`240px` if laid out in a row (mimicking an old table `<td>` width).
 
 ## Empty state
 

@@ -4,15 +4,33 @@
 
 ## Palette
 
-Pure black background, phosphor green foreground (`#33FF33`/`#00FF41`-family) as the single dominant color — this skin should feel almost monochrome, unlike `teletext`'s multi-color broadcast palette. A very subtle CRT glow can be simulated with `text-shadow` (soft green blur behind the same green text) rather than introducing a second hue. If any accent color is needed (e.g. the year badge), stay within green's range (a slightly desaturated or amber-tinted variant) rather than reaching for red/blue — breaking the monochrome rule undercuts the whole bit.
+- Background: `#0D0D0D` (near-black, slightly softer than pure `#000000`).
+- Foreground/dominant color: `#33FF33` (phosphor green).
+- Glow: `text-shadow: 0 0 2px #33FF33, 0 0 6px rgba(51,255,51,0.4)` — same hue, no second color.
+- Accent (year badge, if needed): `#66FF99` (a lighter/desaturated tint of the same green) — never red/blue.
 
 ## Typography
 
-Monospace throughout, no exceptions — this is the one skin where that's load-bearing rather than a nice-to-have. Consider a scanline or slight text "flicker" via CSS animation (very subtle, low-opacity, so it reads as atmosphere rather than becoming distracting or a11y-hostile). Command-prompt framing: entries can be prefixed with a `>` or `$` glyph as if each were a line of output from a query the user just "ran."
+- Font: `"Courier New", "SF Mono", Consolas, monospace` throughout, no exceptions.
+- Base size: `15px`–`16px`, `line-height: 1.6` (generous, terminal-buffer spacing).
+- Prompt prefix per entry: `> ` or `$ ` glyph before each line.
+- Flicker animation (optional, subtle): `animation: flicker 4s infinite`, opacity oscillating `1` → `0.96` — keep the range under 5% to avoid being distracting.
 
 ## Layout
 
-Minimal chrome — no boxes, borders, or cards; the illusion is a raw terminal buffer, so content should flow top-to-bottom as plain lines of monospace text with generous line-height, not grouped into visually separated widgets. The date picker and skin `<select>` should be restyled to look like inline prompt input rather than GUI form controls (remove native chrome via `appearance: none` and re-skin minimally, keeping them functionally identical form elements).
+- No borders, boxes, or cards anywhere — content is plain stacked lines.
+- Vertical spacing between entries: `12px`–`16px`.
+- Page padding: `24px`–`32px` on all sides, left-aligned text (no centering).
+- Form controls: `appearance: none`, background `transparent`, `border-bottom: 1px solid #33FF33` only — no box chrome.
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)). A full-color photo breaks this skin's one-color discipline — force it to obey the same constraint as everything else.
+
+- Image: small, `48px × 48px`, `filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(4)` — this chain pushes any photo toward monochrome-green, keeping the image inside the phosphor-green palette rather than breaking it.
+- No image fallback: skip the image slot entirely — just show `[no image]` as literal bracketed text, `#33FF33`, inline after the title, matching the terse system-message voice used elsewhere in this skin.
+- Placement: image sits inline to the left of the title line (not stacked, not a separate block) — `display: inline-block`, `vertical-align: middle`, `margin-right: 8px` — so the "no decorative boxes" rule holds; it reads as part of the text line, not a card element.
+- Title and quote stay exactly as described in Layout above (plain stacked monospace lines, `> `/`$ ` prefix) — the image never gets its own border, shadow, or background.
 
 ## Typing animation gimmick
 

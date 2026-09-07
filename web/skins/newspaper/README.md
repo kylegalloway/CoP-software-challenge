@@ -4,15 +4,33 @@
 
 ## Palette
 
-Newsprint-adjacent: off-white/cream background (never pure white — real newsprint has warmth and slight texture), pure black text, no color at all in the primary palette — this is a black-and-white-with-cream skin by design, evoking ink on paper. If any color appears, it should be a single restrained red (as in a "breaking news" masthead flourish or the year badge), used the way old papers used a spot color, never a full palette.
+- Background: `#F4F1E9` (warm cream, not pure white).
+- Body text: `#1A1A1A` (near-black ink, not pure `#000000`).
+- Spot color (breaking-news flourish, year badge): `#8B0000` (dark red) — the only color in the palette, used sparingly.
+- Rule lines (masthead, dividers): `#1A1A1A`, `1px`–`2px` solid.
 
 ## Typography
 
-A strong serif for headlines (a slab or traditional serif, bold, large, tight letter-spacing) contrasted with a smaller, denser serif or even a different serif for body copy — real newspapers pair a display serif with a distinct body serif. Justified text alignment in the body column is a strong signal of the genre (careful with `hyphens` for ragged justification at narrow widths). Small caps or all-caps treatment for section labels/bylines.
+- Headline font: a slab or traditional serif — `Georgia, "Times New Roman", serif` at `32px`–`44px`, bold, `letter-spacing: -0.01em` (tight).
+- Body font: a distinct, denser serif if available (`"Times New Roman", Georgia, serif` at a smaller size than headlines reads fine even without a second family) — `15px`–`16px`, `line-height: 1.5`.
+- Body alignment: `text-align: justify; hyphens: auto;`.
+- Section labels/bylines: `text-transform: uppercase`, `letter-spacing: 0.08em`, `12px`.
 
 ## Layout
 
-Multi-column text flow wherever the content allows it (CSS `column-count`/`column-width` on the entries list, if there's enough content to fill more than one column meaningfully — collapse to single-column gracefully on narrow viewports since CSS multicol handles that natively). A masthead-style header treatment for the site title (large, centered, with rule lines above/below, like a paper's nameplate). The date picker can be framed as the "edition date" line papers print near the masthead; the skin picker can sit unobtrusively, maybe styled like small print/classifieds.
+- Multi-column body: `column-count: 2` (or `column-width: 300px` for a fluid column count), `column-gap: 24px` — collapses to one column under ~600px automatically via multicol's own behavior.
+- Masthead: centered, `36px`–`48px` bold serif, flanked by `2px solid #1A1A1A` rule lines above and below, `16px` vertical spacing from the rules.
+- Edition-date line: small, centered, `12px`, uppercase, directly beneath the masthead.
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)) — a photo credit line covers the gap gracefully.
+
+- Image: `filter: grayscale(1) contrast(1.1)` to match newsprint's black-and-white register (a color photo would break the ink-on-paper illusion). Width `100%` of its column, `aspect-ratio: 4 / 3`, `object-fit: cover`.
+- Caption: `11px`, italic, `#1A1A1A` at `70%` opacity, centered beneath the image, `margin-top: 4px` — styled like a real photo credit/cutline. Use the entry's title text here rather than duplicating it as a separate heading.
+- No-image fallback: skip the image slot for that entry and let the headline run as the top of the column — this is exactly how real papers handle photo-less stories, so no placeholder box is needed here (unlike most other skins).
+- Headline (title): sits above or beside the image depending on column width — `20px`–`24px` bold serif, tighter than the masthead but bigger than body text.
+- Body/quote text: flows in the multi-column layout as described above, wrapping around the image if the column is wide enough (`float: left` on the image with `margin: 0 16px 8px 0` is a period-accurate "text wraps the photo" treatment).
 
 ## Empty state
 

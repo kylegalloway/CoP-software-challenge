@@ -4,19 +4,38 @@
 
 ## Palette
 
-Wikipedia's actual restrained palette: white/very-light-grey background, the specific muted blue for links (`#0645AD`-family, visited state slightly desaturated), light grey for infobox/table borders and header shading (`#EAECF0`/`#F8F9FA`-family) — nothing saturated or decorative. This is a palette in service of legibility and citation-density, not branding.
+- Background: `#FFFFFF`.
+- Links: `#0645AD` (unvisited), `#0B0080` desaturated or `#795CB2` (visited).
+- Borders/table lines: `#A2A9B1`.
+- Header/infobox shading: `#EAECF0` (section headers), `#F8F9FA` (infobox background).
+- Body text: `#202122`.
 
 ## Typography
 
-A standard serif or Wikipedia's own sans-serif system stack for body text, small and information-dense, with a very clear heading hierarchy (larger, bottom-bordered section headings, echoing Wikipedia's classic underlined `<h2>` styling). Superscript citation markers (`[1]`, `[2]`-style, CSS-generated or literal characters) next to entries with a `source_url`/`secondary_source_url` are a strong, cheap signature move.
+- Font: `sans-serif` system stack (Wikipedia's own is close to `-apple-system, "Helvetica Neue", Arial, sans-serif`).
+- Body size: `14px`, `line-height: 1.6`.
+- Section headings: `20px`, `border-bottom: 1px solid #A2A9B1`, `padding-bottom: 4px`.
+- Citation markers: `font-size: 11px`, `vertical-align: super`, in the link-blue color, wrapped in literal `[1]`-style brackets.
 
 ## Layout
 
-An infobox-style sidebar or top box summarizing the current date at a glance (styled like Wikipedia's right-aligned infobox: bordered table look, label/value rows) — this is a great home for the sitewide `stats.global_total_confirmed_entries` count, framed like an infobox stat. The entries list itself can read like an article body, each entry a short "paragraph" with its citation marker, and a footer area styled like a References section listing the source URLs as a numbered list (real `<a>` links to `source_url`/`secondary_source_url`, not decorative).
+- Infobox: `width: 280px` (or `~30%` on wide viewports), floated or grid-placed to one side, `border: 1px solid #A2A9B1`, `background: #F8F9FA`, `padding: 8px`, label/value rows each `padding: 4px 0` with a `1px solid #EAECF0` row divider.
+- Article body max-width: `640px`–`720px`.
+- References footer: numbered list, `12px`, `padding-top: 16px`, `border-top: 1px solid #A2A9B1`.
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)) — Wikipedia articles without a lead image are completely normal, so no fallback placeholder is needed.
+
+- Image lives inside the infobox as the "lead image": `width: 100%` of the infobox's `280px`, `object-fit: cover`, capped height `~200px`, `border: 1px solid #A2A9B1`.
+- Caption beneath the image, inside the infobox: `11px`, `#54595D`, centered, `padding: 4px`.
+- Title (the movie) sits as the infobox's top row, styled like an article's infobox title bar: `16px` bold, centered, `background: #EAECF0`, `padding: 6px`.
+- No-image fallback: infobox simply starts with the title bar and skips straight to the label/value rows — exactly how a real stub article's infobox looks.
+- Quote/detail text stays in the main article-body column (not the infobox), formatted as regular article prose with its citation marker per the Typography section above.
 
 ## Talk-page framing (pairs with voting)
 
-Since Wikipedia's actual differentiator is *editorial process*, this skin is the natural place to make the crowdsourcing/voting mechanic (once built) visually legible — e.g. framing vote counts or moderation status the way a talk-page discussion or an article's "citation needed" banner would. Even before that's wired up, leave visual room (a muted banner-style element) for it.
+Since Wikipedia's actual differentiator is *editorial process*, this skin is the natural place to make the collaborative-corpus/voting mechanic (once built) visually legible — e.g. framing vote counts or moderation status the way a talk-page discussion or an article's "citation needed" banner would. Even before that's wired up, leave visual room (a muted banner-style element) for it.
 
 ## Empty state
 

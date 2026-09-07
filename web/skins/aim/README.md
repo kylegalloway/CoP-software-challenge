@@ -4,15 +4,36 @@
 
 ## Palette
 
-AIM's actual brand blue/yellow: a gradient title bar in that specific saturated blue (`#003366`-to-`#3366CC` range) with a yellow running-man-adjacent accent color used sparingly (badges, the "online" indicator dot). Window chrome is grey (`#ECE9D8`-ish, Windows-XP-era grey) — the *content* inside the "window" (the date/entries) sits on white, like a chat log. Green for "online"/confirmed state, grey for idle/empty state — borrowed directly from buddy-list presence dots.
+- Title bar gradient: `#003366` → `#3366CC` (`linear-gradient(to right, ...)`, top to bottom or left to right).
+- Accent (badges, "online" dot): `#FFCC00`.
+- Window chrome/background: `#ECE9D8`.
+- Content area (chat-log body): `#FFFFFF`.
+- Presence colors: online/confirmed `#2FA84F`, idle/empty `#999999`.
+- Border: `2px outset #ECE9D8` for the window frame.
 
 ## Typography
 
-Small system sans-serif (Tahoma or the nearest web-safe equivalent) at a noticeably smaller base size than the other skins — AIM's UI text was always compact. The entry list should visually resemble a chat transcript: each entry prefixed like a buddy's message, maybe with a small colored "screen name" style treatment for the movie title, similar to how AIM colored each participant's name in a conversation.
+- Font: `Tahoma, Geneva, sans-serif`.
+- Base size: `12px`–`13px` — noticeably smaller than every other skin.
+- Line-height: `1.3` (compact, chat-log density).
+- Screen-name treatment (movie title per entry): bold, one consistent accent color, e.g. `#003366`.
 
 ## Layout
 
-A single bordered "window" frame with a fake title bar (text like "Buddy List" or the site name) and a thin 3D-beveled border (`border-style: outset`), echoing classic OS chrome rather than a flat modern card. The date/skin pickers sit where a buddy-list's top controls would; entries render as a scrollable chat-log area beneath, each one left-aligned like an incoming message bubble (no actual bubble shape needed — just indentation and a light background band per entry).
+- Window frame border: `2px outset #ECE9D8`.
+- Title bar height: `24px`–`28px`, white text, `13px` bold.
+- Content padding: `8px`–`12px`.
+- Entry spacing: `4px`–`6px` vertical gap between chat-log lines, left-indent `12px` for each "message."
+
+## Entry card (title + image)
+
+`image_url` is nullable ([ADR-0006](../../../docs/decisions/0006-entry-images.md)) — treat the image as a buddy icon, not a photo.
+
+- Layout: image acts as a "buddy icon" to the left of each chat line — `32px × 32px`, `flex: 0 0 32px`, `object-fit: cover`, `border: 1px solid #999999` (buddy icons were small and square, not rounded).
+- No-image fallback: a generic grey silhouette square, same `32px × 32px`, `background: #CCCCCC` — AIM's own default buddy icon was a plain grey outline, so this reads as in-universe rather than "broken image."
+- Title (movie name, in the screen-name color `#003366`) sits on the same line as the icon, `13px` bold, `margin-left: 8px`.
+- Quote/detail text: `12px`, `#000000`, wraps beneath the title line with the same `8px` left-indent as the icon width plus gap (so text aligns under the title, not the icon).
+- Vertical gap between entries: `6px` — keep it tight, like consecutive chat lines.
 
 ## Away-message gimmick
 

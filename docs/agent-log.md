@@ -520,3 +520,22 @@ as stable identifiers — only the content changed. Left a few incidental,
 non-claim-making uses of "crowdsourced" as a plain adjective (e.g.
 ADR-0006/0007, `docs/dev-guide.md`) alone, since those don't assert
 anything about audience scale or abuse posture.
+
+## 2026-09-07 — Concrete values in all 13 skin READMEs
+
+Human asked for the 13 skin design-guide READMEs (written earlier this
+session) to carry specific, copy-pasteable values wherever the prose had
+been vague — actual hex codes instead of "a saturated blue," actual px
+sizes/line-height ratios instead of "moderate"/"dense," real font-stack
+strings instead of "a clean sans-serif" — without turning the guides into
+literal CSS blocks. Went through all 13 and replaced the vague palette/
+typography/layout prose with concrete values as short bullet lists (hex
+colors, font-family stacks, px/em sizes, line-height numbers, border-
+radius, spacing, box-shadow values) while keeping everything else (the
+"why," the empty-state voice, the differentiation notes) as prose. Picked
+one concrete value per open choice the earlier draft had left as an
+either/or (e.g. `myspace`'s pink-or-blue became `#FF1493` with blue as a
+named alternate) so there's always something directly usable, not just a
+category description. Also caught and fixed a stale "crowdsourcing"
+reference in `wikipedia/README.md`'s talk-page section left over from
+before the axis rename, updating it to "collaborative-corpus" to match.

@@ -27,6 +27,16 @@ once there's a first release.
   `mantine`), written as prose design intent rather than actual CSS —
   `skin.css`/`skin.js` for all 13 remain empty placeholders pending Phase
   4/5 hand-implementation.
+- Filled in specific, copy-pasteable values (hex colors, font stacks, px
+  sizes, line-heights, border-radius, shadows) throughout all 13 skin
+  READMEs wherever the initial draft had been vague ("a saturated blue,"
+  "moderate line-height"), and added an "Entry card (title + image)"
+  section to each covering the upcoming title+image layout per
+  [ADR-0006](./docs/decisions/0006-entry-images.md) — image sizing,
+  cropping, and an explicit no-image fallback treatment for every skin,
+  since `image_url` is nullable and each skin's fallback needed to fit its
+  own era/metaphor (a buddy icon for `aim`, a Top-8 photo tile for
+  `myspace`, a forced-monochrome image for `terminal`, and so on).
 
 ### Changed
 
