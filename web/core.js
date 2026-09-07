@@ -1,10 +1,3 @@
-function todayAsMMDD() {
-    const now = new Date();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // 0-indexed
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${month}-${day}`;
-}
-
 async function loadDate(mmdd) {
     const res = await fetch(`/api/date/${mmdd}`);
     const data = await res.json();
@@ -80,15 +73,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('skin-picker').value = activeSlug;
     applySkin(skinsBySlug[activeSlug]);
 
-    const mmdd = todayAsMMDD();
-    loadDate(mmdd);
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 0-indexed
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = String(now.getFullYear());
+
+    let dateInput = document.getElementById('date-input');
+    dateInput.value = `${year}-${month}-${day}`;
+    loadDate(`${month}-${day}`);
 
     document.getElementById('skin-picker').addEventListener('change', (e) => {
         setActiveSkin(e.target.value);
         applySkin(skinsBySlug[e.target.value]);
     });
 
-    document.getElementById('date-input').addEventListener('change', (e) => {
+    dateInput.addEventListener('change', (e) => {
         const [year, month, day] = e.target.value.split('-');
         loadDate(`${month}-${day}`);
     });

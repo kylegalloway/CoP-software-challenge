@@ -8,6 +8,16 @@ once there's a first release.
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/index.html` was missing its `<script src="/core.js">` tag entirely,
+  so none of the frontend's logic (date fetch, skin swap, event listeners)
+  ever ran in the browser — this alone explained the date picker showing
+  blank, changing the date doing nothing, and no skins applying. Also
+  fixed `core.js` setting `date-input`'s initial value in the wrong string
+  format (`<input type="date">` requires `YYYY-MM-DD` exactly) and its
+  `change` handler's date-string destructuring.
+
 ### Added
 
 - Phase 2: `GET /api/date/:mm-dd` in `src/routes/dates.rs`, wired through
