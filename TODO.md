@@ -117,7 +117,7 @@ more entries (especially mined ones) make the gap harder to fix.
   - Swap `<link id="skin-css">`'s `href` (and load/unload a skin's `skin.js`
     if present) based on the active skin — this is the mechanism the whole
     "13 skins, 1 dataset" claim depends on, so keep it simple and correct.
-- [ ] Confirm: viewing with **no** skin selected still renders usable,
+- [x] Confirm: viewing with **no** skin selected still renders usable,
       correct data (core shell should never be broken on its own). Not yet
       tested end-to-end against the running server.
 

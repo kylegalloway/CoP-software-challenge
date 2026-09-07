@@ -460,3 +460,29 @@ live file, never in place even temporarily. Human then added the script
 tag and applied the remaining format fixes themselves; final state
 verified end-to-end against the live server with no assistant edits
 present. `/commit` run after this entry.
+
+## 2026-09-07 — Design-guide READMEs for all 13 skins
+
+Human asked for a `README.md` in each of the 13 `web/skins/*/` directories:
+a deep prose design guide (palette, typography, layout, rationale) rather
+than actual CSS, for skins whose `skin.css`/`skin.js` are still empty
+placeholders (Phase 4/5 work per `TODO.md`). Treated this as documentation,
+squarely inside the agent's allowed scope per `AGENTS.md` (not
+implementation code), and wrote all 13 directly: `geocities`, `aim`,
+`myspace`, `win95`, `teletext`, `terminal`, `modern`, `newspaper`,
+`blogspot`, `wikipedia`, `google-serp`, `craigslist`, `mantine`. Sourced
+each skin's one-line concept from `PLAN.md`'s skin table and cross-referenced
+[ADR-0004](./decisions/0004-empty-state-per-skin.md) for the empty-state
+copy already sketched for `geocities`/`teletext`, extending that same voice
+to the other 11. Each guide covers palette (with rationale, not just hex
+values), typography, layout/structure, an empty-state voice suggestion, and
+a closing note on what specifically distinguishes that skin from its
+nearest neighbors in the set (e.g. `terminal` vs. `teletext`'s monochrome-
+vs-multicolor distinction, `modern` vs. `mantine`'s flat-vs-rounded
+distinction) so skins that could blur together stay differentiated. Flagged
+`skin.js` gimmick candidates (`aim`'s typing indicator, `myspace`'s glitter
+cursor, `terminal`'s character-reveal animation) as purely decorative,
+non-blocking suggestions, consistent with `AGENTS.md`'s rule that skins
+must not carry logic the app depends on. No CSS/JS/HTML was written or
+implied as copy-paste-ready — guides are prose only, leaving the actual
+implementation for the human to hand-write per Phase 4/5.

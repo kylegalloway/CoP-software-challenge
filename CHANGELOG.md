@@ -18,6 +18,16 @@ once there's a first release.
   format (`<input type="date">` requires `YYYY-MM-DD` exactly) and its
   `change` handler's date-string destructuring.
 
+### Documentation
+
+- A design-guide `README.md` in each of the 13 `web/skins/*/` directories:
+  palette, typography, layout, and empty-state voice for every planned skin
+  (`geocities`, `aim`, `myspace`, `win95`, `teletext`, `terminal`, `modern`,
+  `newspaper`, `blogspot`, `wikipedia`, `google-serp`, `craigslist`,
+  `mantine`), written as prose design intent rather than actual CSS —
+  `skin.css`/`skin.js` for all 13 remain empty placeholders pending Phase
+  4/5 hand-implementation.
+
 ### Added
 
 - Phase 2: `GET /api/date/:mm-dd` in `src/routes/dates.rs`, wired through
