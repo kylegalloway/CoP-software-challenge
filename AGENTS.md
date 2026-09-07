@@ -39,8 +39,11 @@ root for the original prompt). The deliberate angle is to hit *several*
 2. **Largest corpus** — not a hand-typed list of ~50 dates; seeded from
    mining actual film/TV dialogue and metadata for date references, then
    grown further by...
-3. **Crowdsourcing + voting** — anyone can submit a date reference; a simple
-   vote/moderation threshold decides what's "confirmed."
+3. **Collaborative corpus + voting** — the judges/team this gets shown to
+   (a small known group, not the open internet) can submit a date reference;
+   a simple vote/moderation threshold decides what's "confirmed." Voting
+   just needs to work correctly (change your vote, don't double-count
+   repeat clicks) — it's not defending against determined public abuse.
 4. **13 skins, one dataset** — CSS Zen Garden pattern: one semantic HTML
    document, one JSON API, skins are *purely* swappable CSS (+ a little
    optional per-skin JS for a gimmick). See PLAN.md for the full skin list,

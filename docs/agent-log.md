@@ -486,3 +486,37 @@ non-blocking suggestions, consistent with `AGENTS.md`'s rule that skins
 must not carry logic the app depends on. No CSS/JS/HTML was written or
 implied as copy-paste-ready — guides are prose only, leaving the actual
 implementation for the human to hand-write per Phase 4/5.
+
+## 2026-09-07 — Reframing crowdsourcing/vote docs for the real audience
+
+Human clarified the "crowdsourcing" axis has been mis-scoped in the docs:
+this isn't going to be deployed to the open internet, it's shown to a
+small known group (judges/team), so the actual bar for voting is basic
+correctness (repeat-clicking a vote shouldn't double-count it, changing
+a vote should work) rather than resistance to a determined public abuser.
+Went through every doc that framed this as public-facing/abuse-resistant
+(except `docs/agent-log.md` itself, kept as an unedited historical
+record) and reworded: renamed the "Crowdsourced" axis to "Collaborative
+corpus" throughout (`PLAN.md`'s axis table and phased-build-order list,
+`CONTEXT.md`'s one-liner, `README.md`, `TODO.md`'s Phase 6 heading,
+`AGENTS.md`'s numbered pitch list); rewrote
+[ADR-0003](./decisions/0003-vote-anti-abuse.md)'s rationale end to end —
+title, context, and decision bullets — from "accepting a known abuse
+limitation" to "there's no adversarial audience to defend against, the
+fingerprint's job is just correctness"; reworded `TODO.md`'s
+"public-facing" input-sanitization note and its "manual abuse test" item
+into a "manual functionality test" for vote-changing/no-double-counting;
+retitled `docs/testing-plan.md` section 6 from "Abuse/security smoke
+tests" to "Basic-functionality smoke tests" and reworded its vote-related
+checks and unit/integration-test bullets away from "anti-abuse rule"
+phrasing (kept the injection/XSS check, since that's general hygiene
+regardless of audience size, not something specific to public deployment);
+softened "public voting"/"public submission flow" phrasing in
+`docs/corpus-verification.md` and `docs/decisions/0002-moderation-
+threshold.md` to drop the implied open-audience framing. Left the ADR's
+filename (`0003-vote-anti-abuse.md`) unchanged since three other docs and
+the historical log reference it by that path and ADR filenames are treated
+as stable identifiers — only the content changed. Left a few incidental,
+non-claim-making uses of "crowdsourced" as a plain adjective (e.g.
+ADR-0006/0007, `docs/dev-guide.md`) alone, since those don't assert
+anything about audience scale or abuse posture.

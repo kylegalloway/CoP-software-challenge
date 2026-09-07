@@ -162,7 +162,7 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
       and a "no notable date" date — the empty state is easy to forget to
       style per-skin.
 
-## Phase 6 — Crowdsourcing (submit + vote)
+## Phase 6 — Collaborative corpus (submit + vote)
 
 - [ ] `POST /api/submit` in `src/routes/submit.rs` — validate required
       fields (month/day/title/quote/source_url), insert as `status: pending`.
@@ -176,7 +176,9 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
       fetch-on-reveal) — the base `GET /api/date/:mm-dd` response carries
       only `image_url` (or `null`), never image bytes, so a page load's
       guaranteed footprint is unaffected by whether an entry has an image.
-- [ ] Basic input sanitization/length limits (this is public-facing).
+- [ ] Basic input sanitization/length limits (defensive hygiene, not
+      abuse-hardening — this is shown to a small known audience, not the
+      open internet).
 - [ ] `POST /api/vote` in `src/routes/vote.rs` — record a vote, recompute
       whether the entry crosses the moderation threshold from Phase 1, flip
       `pending` → `confirmed` when it does (only if it also has a
@@ -187,8 +189,10 @@ Suggested build order (cheapest/most fun first, save the fussiest for last):
 - [ ] Decide how/whether `pending` entries needing a secondary source are
       surfaced to encourage crowd help finding one (per
       `docs/corpus-verification.md` step 4).
-- [ ] Manual abuse test: try to spam votes/submissions, confirm your
-      chosen anti-abuse approach actually does something.
+- [ ] Manual functionality test: repeat-click a vote and confirm it doesn't
+      double-count, then change your vote (up → down → none) and confirm it
+      updates in place rather than stacking — this is the actual bar, not
+      abuse resistance.
 
 ## Phase 7 — Corpus growth: mining + verification
 

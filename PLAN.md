@@ -14,7 +14,7 @@ axes at once:
 |---|---|
 | Smallest footprint | One base payload (HTML+JSON), skins are pure CSS/JS deltas, no framework |
 | Largest corpus | Seed from mining real dialogue/metadata, not hand-typed trivia |
-| Crowdsourced | Public submission + voting/moderation grows the corpus over time |
+| Collaborative corpus | Submission + voting/moderation grows the corpus over time, for the small known audience (judges/team) this gets shown to — not the open internet |
 | Skins | 12 total visual identities over one dataset (CSS Zen Garden pattern) |
 
 ## Architecture
@@ -75,7 +75,9 @@ or via a one-off import script.
    against the film/show it came from, and queue matches as `pending`
    entries for human/community review rather than auto-publishing — mined
    data needs a confirmation step before it's trustworthy.
-3. Crowdsourced submissions extend the corpus indefinitely after launch.
+3. Submissions from the judges/team extend the corpus after launch — this
+   is a closed group, not the open internet, so growth here is steady
+   rather than "indefinite at scale."
 
 `scripts/seed/mine_corpus.py` is the offline tool for step 2. It is *not*
 part of the running app — it produces a JSON file that gets imported.
@@ -133,7 +135,7 @@ when a skin is added/removed.
 4. **Skin mechanism** — registry + picker + first skin (`modern`) to prove
    the swap mechanism end to end.
 5. **Remaining 11 skins** — one at a time, cheapest/most fun first.
-6. **Crowdsourcing** — `POST /api/submit`, moderation status, `POST
+6. **Collaborative corpus** — `POST /api/submit`, moderation status, `POST
    /api/vote`, surfacing pending vs confirmed appropriately per skin.
 7. **Corpus mining** — `scripts/seed/mine_corpus.py`, import pipeline,
    re-seed `entries` with a much larger pending queue.
@@ -148,7 +150,9 @@ All originally-open questions are now resolved — see `docs/decisions/`:
 - HTTP layer: axum ([ADR-0001](./docs/decisions/0001-http-layer.md)).
 - Moderation threshold: net +3 votes, DB-only admin override
   ([ADR-0002](./docs/decisions/0002-moderation-threshold.md)).
-- Vote anti-abuse: cookie fingerprint, no rate limit, votes are mutable
+- Voting mechanism: cookie fingerprint identifies a voter so their vote is
+  changeable rather than duplicable; not an anti-abuse measure — this is
+  shown to a small known audience (judges/team), not the open internet
   ([ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)).
 - Empty-state flavor text: per-skin via CSS generated content
   ([ADR-0004](./docs/decisions/0004-empty-state-per-skin.md)).

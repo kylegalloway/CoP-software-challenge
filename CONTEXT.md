@@ -1,6 +1,6 @@
 # Today in Cinema
 
-A site that tells you whether a given date is explicitly referenced within a movie or show (not a release date), competing on footprint, corpus size, crowdsourcing, and visual skins simultaneously.
+A site that tells you whether a given date is explicitly referenced within a movie or show (not a release date), competing on footprint, corpus size, collaborative corpus growth, and visual skins simultaneously.
 
 ## Language
 

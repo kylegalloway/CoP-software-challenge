@@ -3,8 +3,8 @@
 Tells you, honestly, whether today (or any given date) is a date explicitly
 referenced in a movie or show — not just a release date. Built for an
 internal software challenge, aiming for smallest footprint + largest corpus
-+ crowdsourced growth + the same data rendered under 13 different visual
-skins.
++ collaborative corpus growth (submit/vote, for the judges/team this gets
+shown to) + the same data rendered under 13 different visual skins.
 
 ## Use of AI in this project
 

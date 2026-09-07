@@ -28,6 +28,22 @@ once there's a first release.
   `skin.css`/`skin.js` for all 13 remain empty placeholders pending Phase
   4/5 hand-implementation.
 
+### Changed
+
+- Reframed the "crowdsourcing"/voting docs to match the real deployment
+  target: this is shown to a small known audience (judges/team), not the
+  open internet, so voting/submission only needs to be *correct* (no
+  double-counting a repeat click, votes are changeable) rather than
+  resistant to determined public abuse. Renamed the "Crowdsourced" axis to
+  "Collaborative corpus" throughout (`PLAN.md`, `CONTEXT.md`, `README.md`,
+  `TODO.md`, `AGENTS.md`); rewrote
+  [ADR-0003](./docs/decisions/0003-vote-anti-abuse.md)'s rationale from
+  "accepting a known abuse limitation" to "no adversarial audience to
+  defend against"; reworded the affected `TODO.md` and
+  `docs/testing-plan.md` checklist items (an "abuse test" became a
+  "functionality test" for vote-changing) while keeping the still-relevant
+  injection/XSS hygiene checks, which aren't audience-specific.
+
 ### Added
 
 - Phase 2: `GET /api/date/:mm-dd` in `src/routes/dates.rs`, wired through

@@ -14,8 +14,10 @@ Target the logic that's easy to get subtly wrong, not the glue code:
   threshold from `docs/decisions/` **and** (b) `secondary_source_url` is
   present? Test both conditions independently — an entry with enough votes
   but no secondary source must stay `pending`.
-- **Vote recording**: duplicate-vote handling per whatever anti-abuse rule
-  you land on (e.g. same fingerprint can't vote twice on one entry).
+- **Vote recording**: same fingerprint voting again on an entry updates the
+  existing vote (change direction, or clear it) rather than creating a
+  second row or being rejected — this is the actual functional
+  requirement, not an anti-abuse rule.
 - **Submission validation**: required fields, length limits, obviously
   malformed input (empty title, missing date, garbage URL).
 
@@ -39,8 +41,8 @@ Spin up the app against an in-memory or temp-file SQLite DB (not
   status code, no partial row created.
 - `POST /api/vote` sequence → confirm the threshold-crossing behavior from
   the unit tests actually fires end-to-end through the real route.
-- Repeat-vote from the same fingerprint → rejected/no-oped per your
-  anti-abuse rule.
+- Repeat-vote from the same fingerprint → updates the existing vote
+  in place (upsert), doesn't create a duplicate row.
 
 ## 3. Manual skin/UI testing (do this before considering a skin "done")
 
@@ -70,9 +72,9 @@ Not automatable in a meaningful way — this is a sampling exercise:
   a random sample (suggest 10%, minimum 10 entries) against
   `docs/corpus-verification.md`'s workflow. If the sample's error rate is
   high, fix the mining script rather than hand-correcting every entry.
-- Periodically (e.g. weekly during active crowdsourcing) spot-check a
-  sample of `confirmed` entries to make sure the vote+secondary-source gate
-  is actually holding the line, not just at launch.
+- Periodically (e.g. weekly during active use by the judges/team) spot-check
+  a sample of `confirmed` entries to make sure the vote+secondary-source
+  gate is actually holding the line, not just at launch.
 
 ## 5. Footprint testing (gate, not a suggestion)
 
@@ -83,15 +85,20 @@ Not automatable in a meaningful way — this is a sampling exercise:
   later" — footprint creep is exactly the kind of thing that's cheap to fix
   now and annoying to fix after 13 skins exist.
 
-## 6. Abuse/security smoke tests (before treating submit/vote as done)
+## 6. Basic-functionality smoke tests (before treating submit/vote as done)
+
+Not abuse-hardening — this is shown to a small known audience (judges/team),
+not the open internet — just confirming the mundane cases work correctly:
 
 - Submit with script tags / obviously malicious `quote` or `title` content
   → confirm it's stored/rendered safely (no injection into any skin's
   markup — remember skins share the same rendering path, so this only
-  needs testing once, not per-skin).
-- Rapid repeated submissions/votes from one source → confirm your rate
-  limiting/anti-abuse approach actually engages.
-- Long-input stress test (very long quote/title) → confirm it's rejected or
+  needs testing once, not per-skin). Good hygiene regardless of audience
+  size, not audience-specific.
+- Click vote repeatedly on the same entry → confirm it doesn't stack up
+  (still just one vote per fingerprint per entry), then change the vote
+  direction → confirm it updates rather than adding a second row.
+- Long-input test (very long quote/title) → confirm it's rejected or
   truncated, not silently breaking layout in some skin.
 
 ## What "done" looks like for a phase

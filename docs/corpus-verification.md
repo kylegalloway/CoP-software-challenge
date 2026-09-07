@@ -60,7 +60,7 @@ pile of unverified regex matches." It also gives every entry a citable
 
 1. Mining pipeline produces a candidate: `{month, day, title, quote,
    source_url: <subtitle file ref>}`, status `pending`.
-2. Before it's eligible for the public submission/voting flow at all, run it
+2. Before it's eligible for the submission/voting flow at all, run it
    through a corroboration pass:
    - Query Checkiday's API for that month/day; look for a matching holiday
      name.
@@ -70,11 +70,12 @@ pile of unverified regex matches." It also gives every entry a citable
    - If none of the above surface anything, fall back to a manual search for
      journalism coverage of "[Film] day [date]".
 3. If a secondary source is found: attach it as `secondary_source_url`,
-   entry becomes eligible for public voting.
+   entry becomes eligible for voting.
 4. If no secondary source is found after a real attempt: still keep it as
-   `pending`, but flag it (e.g. `needs_secondary_source: true`) so the public
-   submission UI can specifically ask the crowd to help find one — this
-   doubles as a crowdsourcing feature, not just a rejection.
+   `pending`, but flag it (e.g. `needs_secondary_source: true`) so the
+   submission UI can specifically ask the judges/team to help find one —
+   this doubles as a way to route the gap to the small group who'll see
+   it, not just a rejection.
 5. Community voting (see `PLAN.md` phase 6) is *additional* signal on top of
    this, not a replacement for it — votes shouldn't be able to promote an
    entry to `confirmed` without at least one secondary source attached,
