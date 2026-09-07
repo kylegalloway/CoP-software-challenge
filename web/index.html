@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today in PopCinema</title>
+    <link id="skin-css" rel="stylesheet" href="/skins/modern/skin.css">
+</head>
+
+<body>
+    <header>
+        <h1>What happened today in popular movies?</h1>
+    </header>
+    <main>
+        <div id="inputs">
+            <section>
+                <div id="date-picker">
+                    <input type="date" id="date-input" aria-label="Choose a different date">
+                </div>
+                <div id="date-display">
+                    <!-- core.js fills this: e.g. <h2>October 3</h2> -->
+                </div>
+            </section>
+
+            <section>
+                <select id="skin-picker" aria-label="Choose website skin">
+                    <!-- <option value="slug">Label</option> per entry, added by core.js -->
+                </select>
+            </section>
+        </div>
+        <hr>
+        <section>
+            <p id="empty-state" hidden></p>
+            <ul id="entries">
+                <!-- one <li> per confirmed entry, added by core.js -->
+            </ul>
+        </section>
+    </main>
+</body>
+
+</html>

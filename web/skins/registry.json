@@ -1,0 +1,67 @@
+[
+    {
+        "label": "GeoCities",
+        "slug": "geocities",
+        "hasScript": false
+    },
+    {
+        "label": "AIM",
+        "slug": "aim",
+        "hasScript": false
+    },
+    {
+        "label": "Myspace",
+        "slug": "myspace",
+        "hasScript": false
+    },
+    {
+        "label": "Win95",
+        "slug": "win95",
+        "hasScript": false
+    },
+    {
+        "label": "Teletext",
+        "slug": "teletext",
+        "hasScript": false
+    },
+    {
+        "label": "Terminal",
+        "slug": "terminal",
+        "hasScript": false
+    },
+    {
+        "label": "Modern",
+        "slug": "modern",
+        "hasScript": false
+    },
+    {
+        "label": "Newspaper",
+        "slug": "newspaper",
+        "hasScript": false
+    },
+    {
+        "label": "Blogspot",
+        "slug": "blogspot",
+        "hasScript": false
+    },
+    {
+        "label": "Wikipedia",
+        "slug": "wikipedia",
+        "hasScript": false
+    },
+    {
+        "label": "Google SERP (Search Engine Results Page)",
+        "slug": "google-serp",
+        "hasScript": false
+    },
+    {
+        "label": "Craigslist",
+        "slug": "craigslist",
+        "hasScript": false
+    },
+    {
+        "label": "Mantine",
+        "slug": "mantine",
+        "hasScript": false
+    }
+]

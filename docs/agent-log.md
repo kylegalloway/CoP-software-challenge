@@ -345,3 +345,50 @@ full `Entry` rows minus `submitted_by`, sitewide `stats`, `400` vs. empty
 AGENTS.md. Ran `/commit`: staged and committed the Phase 2 code +
 data/seed changes in one commit (`07769d0`), no `Co-Authored-By` trailer
 per the standing repo-convention memory from the Phase 1.5 session.
+
+## 2026-09-07 — Phase 3 walkthrough, Phase 4 registry/scaffolding review
+
+Session started on Phase 3/4 of `TODO.md`. Per AGENTS.md, gave design
+discussion and skeletal syntax examples only — the human wrote and typed
+every actual change to `web/index.html`, `web/core.css`, `web/core.js`,
+and `web/skins/registry.json` by hand; I reviewed each pass and called
+out bugs before moving on. `index.html`: walked through the gap between
+the checked-out placeholder shell (`<title>My Web Page</title>`, dead
+`styles.css` href, stray `#no-data-default` div, no skin `<select>`) and
+Phase 3's spec; human replaced the `<input type="date">` picker, added a
+`<select id="skin-picker">`, converted `#entries` to a `<ul>`, and added
+`<p id="empty-state" hidden>`; later reordered into an `#inputs` wrapper
+div (date section left, skin section right) plus an `<hr>` divider above
+the entries section, per the human's explicit two-column layout request.
+`core.css`: built up reset/layout rules only (`box-sizing`, `body`
+margin, `main` flex column, `[hidden]`, `#entries` list-style reset,
+`#inputs` flex row with `space-between`) — pushed back once on my own
+suggestion to add gap/spacing between the picker sections when the human
+asked why it was needed; agreed it wasn't, since "deliberately ugly" is
+the actual spec and spacing is skin territory, left it out. `core.js`:
+caught and the human fixed several real bugs over multiple passes —
+`getDay()` used instead of `getDate()` for day-of-month (weekday vs.
+day-of-month confusion), then a follow-up off-by-one `getDate() + 1`;
+a doubled `": "` separator when rendering `entry.quote`; a hardcoded
+`skinsBySlug = {Label: slug}` object that both inverted the intended
+`slug -> data` mapping and got polluted by `loadSkinRegistry` writing
+slug-keyed entries into the same object (would have thrown or resolved
+to `undefined` depending on call order) — resolved by deleting the
+hardcoded object in favor of a bare `{}` populated entirely from the
+fetched `registry.json`, matching the human's decision to make the skin
+list registry-driven with no per-skin JS duplication. `registry.json`:
+caught a top-level `{"skins": [...]}` wrapper that didn't match
+`core.js`'s `for (const skin of skins)` (expects a bare array) — human
+flattened it; caught a missing `hasScript` field (needed for `core.js`'s
+`applySkin` to know whether to inject a skin's `skin.js`, per the human's
+earlier decision to use a static registry flag over a `HEAD` probe to
+protect the footprint budget) — human added `hasScript: false` to all 13
+entries; caught a `"slug": "google"` that didn't match the actual
+`google-serp` folder on disk — human fixed it. Noted in passing (not
+part of this session's task) that all 13 skin folders under `web/skins/`
+already exist with empty `skin.css`/`skin.js` placeholders, ahead of
+where `TODO.md` had Phase 4/5 checked. Updated `TODO.md`: checked off
+Phase 3's `index.html`/`core.css`/`core.js` items (left the "no skin
+selected" confirmation unchecked — not yet tested against a running
+server this session) and Phase 4's `registry.json` item, with a note on
+the scaffolded skin folders. `/commit` run after this entry.

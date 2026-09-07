@@ -105,25 +105,27 @@ more entries (especially mined ones) make the gap harder to fix.
 
 ## Phase 3 — Base HTML/CSS/JS shell (no visual identity yet)
 
-- [ ] `web/index.html` — semantic structure only: a place for the date
+- [x] `web/index.html` — semantic structure only: a place for the date
       picker/today display, a list of entries, a skin `<select>` or link
       picker, a `<link id="skin-css">` placeholder, an empty-state message
       for "no notable date."
-- [ ] `web/core.css` — layout/reset only, deliberately ugly/unstyled. If it
+- [x] `web/core.css` — layout/reset only, deliberately ugly/unstyled. If it
       looks like a skin, it's doing too much.
-- [ ] `web/core.js`:
+- [x] `web/core.js`:
   - Fetch `GET /api/date/:mm-dd` for today on load; render into the DOM.
   - Read/write the active skin choice (query param and/or `localStorage`).
   - Swap `<link id="skin-css">`'s `href` (and load/unload a skin's `skin.js`
     if present) based on the active skin — this is the mechanism the whole
     "13 skins, 1 dataset" claim depends on, so keep it simple and correct.
 - [ ] Confirm: viewing with **no** skin selected still renders usable,
-      correct data (core shell should never be broken on its own).
+      correct data (core shell should never be broken on its own). Not yet
+      tested end-to-end against the running server.
 
 ## Phase 4 — Skin mechanism proof + first skin
 
-- [ ] `web/skins/registry.json` — list of `{slug, label}` for every skin,
-      consumed by the picker UI in `core.js`.
+- [x] `web/skins/registry.json` — list of `{slug, label, hasScript}` for
+      every skin, consumed by the picker UI in `core.js`. All 13 skin
+      folders scaffolded with empty `skin.css`/`skin.js` placeholders.
 - [ ] Build `modern` skin first (it's the "normal" baseline, easiest to get
       right, good smoke test for the swap mechanism).
 - [ ] Confirm switching skins via the picker requires zero changes to

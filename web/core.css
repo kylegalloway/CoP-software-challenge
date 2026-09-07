@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    /* no font-family, no color, no background — that's a skin's job */
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#inputs>section {
+    display: flex;
+    flex-direction: row;
+    justify-content: normal;
+}
+
+[hidden] {
+    display: none;
+}
+
+#entries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
