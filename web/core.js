@@ -19,6 +19,12 @@ async function loadDate(mmdd) {
     for (const entry of data.entries) {
         const li = document.createElement('li');
         li.textContent = entry.title + (entry.quote ? `: ${entry.quote}` : '');
+        if (entry.specific_year) {
+            const badge = document.createElement('span');
+            badge.className = 'year-badge';
+            badge.textContent = entry.specific_year;
+            li.appendChild(badge);
+        }
         entriesEl.appendChild(li);
     }
 }
@@ -30,11 +36,13 @@ function getActiveSkin() {
 
 function setActiveSkin(slug) {
     localStorage.setItem('skin', slug);
-    // also consider updating the URL via history.replaceState, your call
+    const params = new URLSearchParams(location.search);
+    params.set('skin', slug);
+    const newUrl = `${location.pathname}?${params.toString()}`;
+    history.replaceState(null, '', newUrl);
 }
 
 let currentSkinScript = null;
-
 function applySkin(skin) {
     document.getElementById('skin-css').href = `/skins/${skin.slug}/skin.css`;
 
@@ -51,7 +59,6 @@ function applySkin(skin) {
 }
 
 let skinsBySlug = {};
-
 async function loadSkinRegistry() {
     const res = await fetch('/skins/registry.json');
     const skins = await res.json();

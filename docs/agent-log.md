@@ -392,3 +392,31 @@ Phase 3's `index.html`/`core.css`/`core.js` items (left the "no skin
 selected" confirmation unchecked — not yet tested against a running
 server this session) and Phase 4's `registry.json` item, with a note on
 the scaffolded skin folders. `/commit` run after this entry.
+
+## 2026-09-07 — core.js: year badge, shareable skin URL, function ordering
+
+Follow-up session, same day. Human raised that `needs_specific_year`
+entries need the year surfaced to visitors; talked through three framings
+(client-only display, backend year-filtering via a new query param, or
+folding the date-input's discarded year into the existing fetch) before
+the human settled on the simplest: no backend change, just render
+`entry.specific_year` as a visible marker whenever present, for any date
+queried. Sketched two options (inline text suffix vs. a `.year-badge`
+span so skins get a CSS hook); human chose the span and wrote it into
+`loadDate`'s render loop themselves — caught one ordering quirk (badge
+appended to `li` after `li` was already appended to the live list) that
+turned out to be harmless (DOM references, not snapshots) but reordered
+it anyway for readability. Explained `history.replaceState` (in response
+to a direct question about a comment left several turns earlier) as a
+same-document address-bar update with no reload/history-entry, distinct
+from `pushState`; framed the missing call as a real feature gap — skin
+choice persisted to `localStorage` but never reflected in the URL, so a
+copied/bookmarked link couldn't reproduce the currently-active skin —
+and the human wrote `setActiveSkin`'s `URLSearchParams` + `replaceState`
+addition themselves. Also discussed `core.js`'s function ordering on
+request (no established convention, functions were placed in whatever
+order they were first written): recommended grouping by concern
+(date/entries, then skin state, then the `DOMContentLoaded` bootstrap
+last) with `let` declarations kept adjacent to the function that owns
+them, over strict chronological or bottom-up-dependency orderings; human
+reordered the file to match. `/commit` run after this entry.
