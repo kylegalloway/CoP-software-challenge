@@ -10,13 +10,35 @@ async function loadDate(mmdd) {
     emptyEl.hidden = true;
 
     for (const entry of data.entries) {
+        // Setup entry list item
         const li = document.createElement('li');
-        li.textContent = entry.title + (entry.quote ? `: ${entry.quote}` : '');
+        li.className = 'entry';
+
+        // Add title section
+        const title = document.createElement('p');
+        title.className = 'entry-title';
+        title.textContent = entry.title;
+        li.appendChild(title);
+        // Add quote section if it exists
+        if (entry.quote) {
+            const quote = document.createElement('p');
+            quote.className = 'entry-quote';
+            quote.textContent = entry.quote;
+            li.appendChild(quote);
+        }
+        // Add year badge if it exists
         if (entry.specific_year) {
             const badge = document.createElement('span');
             badge.className = 'year-badge';
             badge.textContent = entry.specific_year;
             li.appendChild(badge);
+        }
+        // Add image if it exists
+        if (entry.image_url) {
+            const image = document.createElement('img');
+            image.className = 'entry-image';
+            image.src = entry.image_url;
+            li.appendChild(image);
         }
         entriesEl.appendChild(li);
     }

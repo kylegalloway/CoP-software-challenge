@@ -8,6 +8,21 @@ once there's a first release.
 
 ## [Unreleased]
 
+### Added
+
+- `web/core.js` renders each entry's markup as `<li class="entry">` with
+  `.entry-title`, an optional `.entry-quote`, an optional `.year-badge`, and
+  an optional `.entry-image` (`img`, sourced from `entry.image_url`) — a
+  skin-agnostic structure any of the 13 skins can lay out independently,
+  replacing the previous single-text-node `<li>`. `web/core.css` gained a
+  baseline `#entries img { max-width: 100% }` reset so an unstyled skin
+  never overflows on an entry image. `web/index.html`'s `#empty-state`
+  element now carries real default copy ("No pop-culture moments confirmed
+  for this date, yet.") instead of being empty — any skin without a
+  `skin.js` still shows a sensible message; a skin's optional `skin.js` may
+  overwrite the text for tone, per the existing "gimmick" allowance, but the
+  default must stand on its own.
+
 ### Fixed
 
 - `web/index.html` was missing its `<script src="/core.js">` tag entirely,
