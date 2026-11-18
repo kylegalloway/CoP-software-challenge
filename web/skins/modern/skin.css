@@ -40,7 +40,7 @@ hr {
     background: #FFFFFF;
 }
 
-.entries>li {
+#entries>li {
     border-radius: 8px;
     border-bottom: 1px solid #E5E7EB;
     gap: 16px;

@@ -25,6 +25,10 @@ once there's a first release.
 
 ### Fixed
 
+- The `modern` skin's entry card styles (radius, divider, flex gap) never
+  applied. `skin.css` selected `.entries > li`, but the list in
+  `web/index.html` is `<ul id="entries">`, so the selector is now
+  `#entries > li`.
 - `web/index.html` was missing its `<script src="/core.js">` tag entirely,
   so none of the frontend's logic (date fetch, skin swap, event listeners)
   ever ran in the browser — this alone explained the date picker showing
