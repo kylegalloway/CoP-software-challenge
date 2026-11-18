@@ -539,3 +539,63 @@ named alternate) so there's always something directly usable, not just a
 category description. Also caught and fixed a stale "crowdsourcing"
 reference in `wikipedia/README.md`'s talk-page section left over from
 before the axis rename, updating it to "collaborative-corpus" to match.
+
+## 2026-09-18 — Review pass on modern skin: entry markup and empty-state wording; commit
+
+Human working on `web/skins/modern/skin.css` (first real skin CSS, still
+uncommitted) flagged two things it surfaced: the `<li>` entries needed more
+structure than plain text, and uncertainty about how a skin should supply
+the empty-state message. Reviewed `index.html`/`core.js`/`core.css` plus the
+`modern` diff (not written by the agent) and gave review-only guidance, per
+`AGENTS.md`: pointed out both were shared/`core.js` concerns, not
+`modern`-only ones, since skins must stay presentation-only. For entry
+markup, recommended a skin-agnostic per-entry structure (`.entry` `<li>`
+with `.entry-title`/`.entry-quote`/`.year-badge` children) so any skin can
+flex/position pieces independently. For the empty state, recommended the
+default wording live directly in `index.html` (it was present but empty)
+rather than being skin-supplied, since content is core's job. Human then
+hand-wrote the `.entry` structure into `core.js`'s render loop and asked
+whether per-skin `skin.js` could override the default wording — confirmed
+that's compatible with `AGENTS.md`'s "optional per-skin JS for a gimmick"
+allowance as long as the `index.html` default stands alone as a complete
+sentence and any override is a plain text swap, not new logic. Noted in
+passing this diverges from
+[ADR-0004](./decisions/0004-empty-state-per-skin.md)'s existing decision
+(CSS-generated content off a `data-empty-state` attribute, zero `skin.js`
+involvement) — flagged, not reconciled, since it wasn't asked for.
+
+Human then added an image slot to `core.js` themselves and asked for
+verification. Reviewed the diff and caught a real bug: the new code read/set
+`entry.image`, but the actual API/schema field (confirmed by reading
+`data/seed/dates.schema.json`, `src/models.rs`, `src/db/schema.sql`) is
+`image_url` — so images would never have rendered regardless of data. Also
+flagged an inline `image.style.maxWidth` assignment as presentation logic
+that belongs in `core.css` instead. Human fixed both: the field-name typo,
+and moved the max-width rule into `core.css` as `#entries img { max-width:
+100% }`.
+
+Ran `/commit`: updated `CHANGELOG.md`'s `[Unreleased]` section (new
+"Added" entry for the entry-markup/empty-state/image work), found no
+in-code TODOs to remove and no `TODO.md` items ready to check off (Phase 4's
+"build `modern` skin first" item is still open — the skin isn't finished).
+Split into two signed commits: `6109a7d` (`core.js`/`core.css`/
+`index.html` — structured entry markup and real empty-state copy) and
+`d66a5e0` (`modern/skin.css` — first pass at the baseline skin's palette,
+type, and card layout). No code written or edited by the agent this
+session — all `core.js`/`core.css`/`index.html`/`skin.css` changes were
+hand-written by the human; the agent's only file edits were to
+`CHANGELOG.md` and this log, both documentation.
+
+## 2026-11-18 — Commit pass on pending working-tree changes
+
+Human asked for the `/commit` workflow to run across several local repos,
+this one included. Pending here: a hand-written one-line fix in
+`web/skins/modern/skin.css` (`.entries > li` → `#entries > li`, since the
+list is `<ul id="entries">` and no `entries` class exists) and the
+uncommitted 2026-09-18 log entry above. Added a "Fixed" entry for the
+selector to `CHANGELOG.md`'s `[Unreleased]` section, found no related TODOs,
+and committed the skin fix plus changelog as one signed commit (`54b3490`),
+then this log (both entries) as a separate signed commit. The two existing
+unpushed commits were left as they were, and nothing was pushed. No code
+written or edited by the agent; its only file edits were to `CHANGELOG.md`
+and this log.
